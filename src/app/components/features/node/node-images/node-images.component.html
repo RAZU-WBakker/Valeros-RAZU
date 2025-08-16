@@ -3,12 +3,10 @@
   <app-mirador *ngIf="useViewer" [imageUrls]="imageUrls"></app-mirador>
 
   <!-- THUMB -->
-  <div class="w-full h-full overflow-y-scroll" *ngIf="!useViewer">
-    <img
-      [src]="imageUrls[0]"
-      [alt]="imageLabel ?? 'Unknown image'"
-      class="w-full h-full object-cover"
-      (error)="onImageLoadError($event)"
-    />
+  <div class="w-full h-full overflow-y-scroll relative" *ngIf="!useViewer">
+    <div class="skeleton absolute inset-0" *ngIf="!thumbLoaded"></div>
+    <img #thumbImg [src]="imageUrls[0]" [alt]="imageLabel ?? 'Unknown image'"
+      class="w-full h-full object-cover transition-opacity duration-200" (load)="onImageLoad()"
+      (error)="onImageLoadError($event)" loading="lazy" decoding="async" [class.opacity-0]="!thumbLoaded" />
   </div>
 </ng-container>

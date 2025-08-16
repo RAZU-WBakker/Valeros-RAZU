@@ -11,10 +11,24 @@ export class FileRenderService {
   constructor(
     private urlService: UrlService,
     private sparql: SparqlService,
-  ) {}
+  ) { }
 
   getThumbImageUrl(url: string, fileType: FileType): string {
     if (fileType === FileType.WEB_IMAGE) {
+      // For external images, use proxy if configured to avoid CORS/ORB blocking in list views
+      const proxy = Settings.endpoints.proxyUrl;
+      if (proxy) {
+        try {
+          const u = new URL(url, window.location.origin);
+          const isCrossOrigin = u.origin !== window.location.origin;
+          if (isCrossOrigin) {
+            return `${proxy}?url=${encodeURIComponent(url)}`;
+          }
+        } catch {
+          // If URL parsing fails, fall back to proxying
+          return `${proxy}?url=${encodeURIComponent(url)}`;
+        }
+      }
       return url;
     }
 
