@@ -146,6 +146,12 @@ export class FilterService {
   }
 
   private _restorePreviousFilters() {
+    // If there are already enabled filters (e.g., set from URL or user action),
+    // do not override them with previously saved filters.
+    if (this.enabled.value && this.enabled.value.length > 0) {
+      return;
+    }
+
     const restoredFilters = this.prevEnabled.filter((prevEnabledFilter) =>
       this._filterExistsInOptions(prevEnabledFilter),
     );
@@ -270,63 +276,59 @@ export class FilterService {
   // }
 
   async updateFilterOptionValues(query: string) {
-    if (FilterService.DEBUG) {
-      console.log('[FilterService] updateFilterOptionValues called with query:', query);
-      console.log('[FilterService] all filter options before update:', JSON.parse(JSON.stringify(this.options.value)));
-    }
+    const filterOptionsList: FilterOptionModel[] = Object.values(
+      this.options.value,
+    );
 
-    const filterOptions = { ...this.options.value };
-    const hits = this.searchHitsService.getHits ? this.searchHitsService.getHits() : [];
+    const responses: estypes.SearchResponse<any>[] =
+      await this.elastic.getFilterOptions(
+        query,
+        filterOptionsList,
+        this.enabled.value,
+      );
+    const docCounts: FieldDocCountsModel =
+      this._getFieldDocCountsFromResponses(responses);
 
-    for (const filterId in filterOptions) {
-      const filter = filterOptions[filterId];
-      const valueHitMap: Map<string, { hitIds: string[] }> = new Map();
-      const hideValueIds = filter.hideValueIds || [];
-      for (const hit of hits) {
-        for (const fieldId of filter.fieldIds) {
-          let value = hit._source ? hit._source[fieldId] : undefined;
-          if (Array.isArray(value)) {
-            (value as string[]).forEach((v: string) => {
-              if (v && !hideValueIds.includes(v)) {
-                if (!valueHitMap.has(v)) {
-                  valueHitMap.set(v, { hitIds: [] });
-                }
-                const entry = valueHitMap.get(v);
-                if (entry && hit._id && !entry.hitIds.includes(hit._id)) {
-                  entry.hitIds.push(hit._id);
-                }
-              }
-            });
-          } else if (typeof value === 'string' && value && !hideValueIds.includes(value)) {
-            if (!valueHitMap.has(value)) {
-              valueHitMap.set(value, { hitIds: [] });
+    const filterOptions = this.options.value;
+    for (const [_, filter] of Object.entries(filterOptions)) {
+      const filterValuesMap = new Map<string, string[]>();
+
+      filter.fieldIds.forEach((fieldId) => {
+        const elasticFieldId = this.data.replacePeriodsWithSpaces(fieldId);
+        const docCountsForField: DocCountModel[] =
+          docCounts?.[elasticFieldId] ?? [];
+        const docCountsToShow: DocCountModel[] = docCountsForField.filter(
+          (d) => {
+            const valueId = d.key;
+            const shouldHideValueId = filter.hideValueIds?.includes(valueId);
+            if (!filter.showOnlyValueIds) {
+              return !shouldHideValueId;
             }
-            const entry = valueHitMap.get(value);
-            if (entry && hit._id && !entry.hitIds.includes(hit._id)) {
-              entry.hitIds.push(hit._id);
-            }
+
+            return filter.showOnlyValueIds.includes(valueId);
+          },
+        );
+        docCountsToShow.forEach((d) => {
+          const id = d.key;
+          const hitIds = d.hitIds;
+
+          if (filterValuesMap.has(id)) {
+            filterValuesMap.set(id, filterValuesMap.get(id)!.concat(hitIds));
+          } else {
+            filterValuesMap.set(id, hitIds);
           }
-        }
-      }
-      const valueIds = Array.from(valueHitMap.keys());
-      let labelsMap: Map<string, string> = new Map();
-      if (valueIds.length > 0) {
-        try {
-          const labelResults = await this.sparql.getLabels(valueIds);
-          labelsMap = new Map(labelResults.map((l: { '@id': string, label: string }) => [l['@id'], l.label]));
-        } catch (e) {
-          console.warn('[FilterService] Failed to fetch labels via SPARQL:', e);
-        }
-      }
-      filter.values = Array.from(valueHitMap.entries()).map(([v, { hitIds }]) => ({
-        ids: [v],
-        label: labelsMap.get(v) || v,
-        filterHitIds: hitIds,
+        });
+      });
+      const filterValues: FilterOptionValueModel[] = Array.from(
+        filterValuesMap,
+      ).map(([id, filterHitIds]) => ({
+        ids: [id],
+        filterHitIds: filterHitIds,
       }));
-    }
 
-    if (FilterService.DEBUG) {
-      console.log('[FilterService] filterOptions after update:', JSON.parse(JSON.stringify(filterOptions)));
+      const clusteredFilterValues =
+        this.clusters.clusterFilterOptionValues(filterValues);
+      filter.values = clusteredFilterValues;
     }
     this.options.next(filterOptions);
   }
