@@ -1,34 +1,16 @@
-<div
-  class="form-control flex-row"
-  *ngFor="let value of values?.slice(0, numShowing)"
->
+<div class="form-control flex-row" *ngFor="let value of values?.slice(0, numShowing)">
   <label class="label text label-text" for="filter-{{ value.ids[0] }}">
-    <input
-      type="checkbox"
-      class="checkbox checkbox-sm mr-4"
-      [checked]="filterService.has(value.ids, FilterType.FieldAndValue)"
-      (click)="onFilterToggle(value.ids)"
-      [id]="'filter-' + value.ids[0]"
-    />
-    <app-node-link
-      [disabled]="true"
-      [label]="value.label"
-      [url]="!value.label ? value.ids[0] : undefined"
-      [suffixStr]="getFilterOptionCountStr(value.filterHitIds.length)"
-      [shouldHighlight]="false"
-      *ngIf="value.ids"
-    >
+    <input type="checkbox" class="checkbox checkbox-sm mr-4"
+      [checked]="filterService.has(value.ids, FilterType.FieldAndValue)" (click)="onFilterToggle(value.ids)"
+      [id]="'filter-' + value.ids[0]" />
+    <app-node-link [disabled]="true" [label]="value.label" [url]="!value.label ? value.ids[0] : undefined"
+      [suffixStr]="getFilterOptionCountStr(value.filterHitIds.length)" [shouldHighlight]="false" [shouldTruncate]="true"
+      [allowLabelExpand]="false" *ngIf="value.ids" [maxChars]=24>
     </app-node-link>
   </label>
 </div>
 
-<button
-  class="btn btn-sm btn-neutral mt-2"
-  (click)="onShowMoreClicked()"
-  *ngIf="hasMoreToShow"
-  role="region"
-  aria-label="Load more results"
-  aria-labelledby="load-more-results-filter-option"
->
+<button class="btn btn-sm btn-neutral mt-2" (click)="onShowMoreClicked()" *ngIf="hasMoreToShow" role="region"
+  aria-label="Load more results" aria-labelledby="load-more-results-filter-option">
   {{ "search-interface.load-more-results" | translate }}
 </button>

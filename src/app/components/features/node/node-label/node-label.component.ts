@@ -21,6 +21,7 @@ export class NodeLabelComponent implements OnInit, OnChanges {
   @Input() shouldTruncate = true;
   @Input() allowLabelExpand = true;
   @Input() highlightStr?: string;
+  @Input() maxChars = Settings.ui.labelMaxChars;
   showingTruncatedLabel = true;
 
   renderedLabelHtml = '';
@@ -79,7 +80,7 @@ export class NodeLabelComponent implements OnInit, OnChanges {
     const strippedLabel = striptags(this.label);
     let labelToHighlight = strippedLabel;
     if (this.shouldTruncate && this.showingTruncatedLabel) {
-      labelToHighlight = truncate(strippedLabel, Settings.ui.labelMaxChars);
+      labelToHighlight = truncate(strippedLabel, this.maxChars);
     }
     const labelWithHighlightsHtml: string = this.getLabelWithHighlightsHtml(
       labelToHighlight,

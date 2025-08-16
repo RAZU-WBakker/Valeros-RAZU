@@ -22,7 +22,7 @@
   <a [routerLink]="details.getLink(node)" queryParamsHandling="merge" *ngIf="!details.showing.value" class="w-full">
     <div [ngClass]="shouldShowFileNextToTable() ? 'p-6' : 'p-0'" class="flex-grow relative">
       <div class="text-lg mr-6 font-bold" *ngIf="showTitle">
-        <app-node-link [url]="details.getLink(node)" [label]="title" />
+        <app-node-link [url]="details.getLink(node)" [label]="title" [shouldTruncate]="false" />
       </div>
 
       <div class="w-full sm:px-4 sm:pr-32">
@@ -58,7 +58,7 @@
   <div [ngClass]="(shouldShowSectionNextToTable() | async) ? 'p-6' : 'p-0'" class="flex-grow relative"
     *ngIf="details.showing.value">
     <div class="text-lg mr-6 font-bold" *ngIf="showTitle">
-      <app-node-link [url]="details.getLink(node)" [label]="title" />
+      <app-node-link [url]="details.getLink(node)" [label]="title" [shouldTruncate]="false" />
     </div>
 
     <div class="w-full sm:px-4 sm:pr-32">

@@ -35,6 +35,7 @@ import { SearchService } from '../../../../services/search/search.service';
 import { ScrollService } from '../../../../services/ui/scroll.service';
 import { UrlService } from '../../../../services/url.service';
 import { NodeLabelComponent } from '../node-label/node-label.component';
+import { Settings } from '../../../../config/settings';
 
 @Component({
   selector: 'app-node-link',
@@ -61,6 +62,7 @@ export class NodeLinkComponent implements OnInit, OnChanges {
   @Input() allowLabelExpand = true;
   @Input() suffixStr = '';
   @Input() shouldHighlight = true;
+  @Input() maxChars = Settings.ui.labelMaxChars;
 
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
