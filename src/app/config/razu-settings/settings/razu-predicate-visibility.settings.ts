@@ -69,6 +69,8 @@ export const razuPredicateVisibilitySettings: PredicateVisibilitySettings = {
     'https://schema.org/breadcrumb',
     'http://schema.org/mainEntity',
     'http://purl.org/dc/terms/hasFormat',
+    'https://data.razu.nl/def/ldto/seo',
+    'http://schema.org/image',
   ],
   hideTypeBadges: [
     'https://data.razu.nl/def/ldto/BeperkingGebruikGegevens',

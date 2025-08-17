@@ -1,3 +1,16 @@
 .border {
     border: 0;
 }
+
+.node-breakpoint {
+    @media (min-width: 1100px) {
+        flex-direction: row;
+    }
+}
+
+/* At >=1100px, allow the left pane (file renderer anchor) to grow with content */
+@media (min-width: 1100px) {
+    .node-h-large-auto {
+        height: auto !important;
+    }
+}

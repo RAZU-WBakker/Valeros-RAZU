@@ -16,7 +16,7 @@
       </svg>
       Het pand
     </label>
-    <div class="tab-content bg-base-100 border-base-300 p-6 docviewer"><app-doc-viewer [url]="buildinghistoryPDF"
+    <div class="tab-content bg-base-100 border-base-300 p-2 docviewer"><app-doc-viewer [url]="buildinghistoryPDF"
         [fileType]="FileType.PDF" [style.height]="!shownInTableCell ? '42rem' : '42rem'"
         (error)="hasViewer.emit(false)">
       </app-doc-viewer></div>
@@ -32,7 +32,7 @@
       </svg>
       De mensen
     </label>
-    <div class="tab-content bg-base-100 border-base-300 p-6 docviewer"><app-doc-viewer [url]="peoplehistoryPDF"
+    <div class="tab-content bg-base-100 border-base-300 p-2 docviewer"><app-doc-viewer [url]="peoplehistoryPDF"
         [fileType]="FileType.PDF" [style.height]="!shownInTableCell ? '42rem' : '42rem'"
         (error)="hasViewer.emit(false)">
       </app-doc-viewer></div>

@@ -1,16 +1,16 @@
 <div
-  class="flex w-full bg-base-100 border mb-4 shadow hover:shadow-lg transition-shadow duration-200 min-h-[calc(100%-1rem)] relative"
+  class="flex w-full bg-base-100 border mb-4 shadow hover:shadow-lg transition-shadow duration-200 min-h-[calc(100%_-_1rem)] relative"
   *ngIf="node" [ngClass]="[
     (shouldShowSectionNextToTable() | async)
-      ? 'p-0 flex flex-col sm:flex-row'
+      ? 'p-0 flex flex-col node-breakpoint'
       : 'p-6',
   ]" [attr.data-scroll-id]="encodeURIComponent(nodes.getId(node))" role="main" aria-labelledby="search-results"
   [attr.aria-label]="title">
   <!-- File renderer in details view, thumb on search page (left side of node) -->
   <a [routerLink]="details.showing.value ? null : details.getLink(node)" queryParamsHandling="merge"
-    class="h-72 sm:h-auto" [ngClass]="[
+    class="h-128 node-h-large-auto" [ngClass]="[
       details.showing.value ? 'cursor-default' : '',
-      (shouldShowSectionNextToTable() | async) ? 'inline-block' : 'hidden',
+      (shouldShowSectionNextToTable() | async) ? 'block' : 'hidden',
     ]" [style.width]="sectionNextToTableWidth" [style.min-width]="sectionNextToTableWidth">
     <app-file-renderer [urls]="files.value" [shownInTableCell]="false" [isThumb]="!details.showing.value"
       (hasViewer)="canShowUsingFileRenderer.next($event)" [class.hidden]="!shouldShowFileNextToTable()" />
@@ -75,7 +75,7 @@
       </app-node-table-row>
     </div>
 
-    <div class="sm:pr-32">
+    <div class="sm:pr-4">
       <app-node-renderer [node]="node" />
     </div>
 

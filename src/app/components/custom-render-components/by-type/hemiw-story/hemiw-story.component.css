@@ -4,10 +4,20 @@
 }
 
 .docviewer {
-    height: 100%;
-    min-height: 42rem;
-    min-width: 32rem;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    /* allow shrinking in flex/grid parents */
+    height: auto;
+    min-height: 42rem;
+    overflow: hidden;
+    /* prevent horizontal scroll bleed */
+}
+
+@media (max-width: 1024px) {
+    .docviewer {
+        min-height: 28rem;
+    }
 }
 
 .loading {

@@ -1,6 +1,7 @@
 import { AsyncPipe, Location, NgClass, NgIf } from '@angular/common';
 import {
   Component,
+  HostListener,
   Input,
   OnChanges,
   OnInit,
@@ -88,6 +89,14 @@ export class NodeComponent implements OnInit, OnChanges {
 
   private shouldShowIIIFSubject = new BehaviorSubject<boolean>(false);
   shouldShowIIIF$ = this.shouldShowIIIFSubject.asObservable();
+
+  // Track viewport width; used to align TS logic with Tailwind md1100 breakpoint
+  viewportWidth = window.innerWidth;
+
+  @HostListener('window:resize')
+  onResize() {
+    this.viewportWidth = window.innerWidth;
+  }
 
   constructor(
     public nodes: NodeService,
@@ -192,7 +201,8 @@ export class NodeComponent implements OnInit, OnChanges {
   }
 
   get sectionNextToTableWidth(): string {
-    if (window.innerWidth < 640) {
+    // Align with md1100 (1100px) Tailwind breakpoint
+    if (this.viewportWidth < 1100) {
       return '100%';
     }
 

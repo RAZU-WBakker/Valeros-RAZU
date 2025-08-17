@@ -14,7 +14,7 @@ export const uiSettings: UiSettings = {
     additionalNumToShowOnClick: 5,
   },
   filterOptions: {
-    numToShowByDefault: 10,
+    numToShowByDefault: 6,
     additionalNumToShowOnClick: 10,
   },
   labelFetchIntervalMs: 100,
