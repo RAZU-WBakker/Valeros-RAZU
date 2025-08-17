@@ -197,7 +197,7 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
                                 type: {
                                     type: 2,
                                     fieldIds: ['type.keyword'],
-                                    valueIds: ['https://schema.org/CreativeWork']
+                                    valueIds: ['https://huizenenmenseninwijk.nl/def/hemiw/map']
                                 }
                             }),
                             q: ''
