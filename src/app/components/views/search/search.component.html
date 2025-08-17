@@ -1,5 +1,5 @@
 <app-view-container>
-  <div class="content-width-constraint">
+  <div class="content-width-constraint pt-16">
     <app-lang-switch class="absolute top-1 right-4" />
 
     <app-header />
@@ -16,9 +16,9 @@
       <!--    <app-active-filters />-->
     </div>
 
-    <app-details-back-button *ngIf="details.showing.value" class="px-4" />
+    <app-details-back-button *ngIf="details.showing.value" class="mt-6 mb-0" />
 
-    <div class="mt-16" [ngClass]="[
+    <div class="mt-6" [ngClass]="[
         settings.showingFilterPanelOnSide()
           ? 'flex flex-grow overflow-y-hidden flex-col'
           : '',
