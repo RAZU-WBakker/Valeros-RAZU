@@ -33,7 +33,7 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
     menuOpen = false;
 
     isMobile(): boolean {
-        return window.matchMedia('(max-width: 1100px)').matches;
+        return window.matchMedia('(max-width: 1024px)').matches;
     }
 
     toggleMenu() {
@@ -43,7 +43,7 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
     closeMenu() {
         this.menuOpen = false;
     }
-    private static DEBUG = false;
+    private static DEBUG = true;
 
     constructor(private router: Router, private routing: RoutingService, private translate: TranslateService) {
         if (NavButtonsComponent.DEBUG) {
@@ -56,75 +56,6 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
     topButtons: NavButton[] = [];
     middleButtons: NavButton[] = [];
     bottomButtons: NavButton[] = [];
-
-    // These are the single grid buttons
-    buttons: NavButton[] = [
-        // { label: 'Onderzochte panden', icon: featherSearch, route: '/onderzochte-panden' },
-        // {
-        //     label: 'Alle panden', icon: featherHome, route: {
-        //         path: '/search',
-        //         queryParams: {
-        //             filters: JSON.stringify({
-        //                 type: {
-        //                     type: 2,
-        //                     fieldIds: ['type'],
-        //                     valueIds: ['https://w3id.org/italia/onto/CLV/Address']
-        //                 }
-        //             }),
-        //             q: ''
-        //         }
-        //     }
-        // },
-        // {
-        //     label: 'Alle straten', icon: featherNavigation, route: {
-        //         path: '/search',
-        //         queryParams: {
-        //             filters: JSON.stringify({
-        //                 type: {
-        //                     type: 2,
-        //                     fieldIds: ['type'],
-        //                     valueIds: ['https://w3id.org/italia/onto/CLV/StreetToponym']
-        //                 }
-        //             }),
-        //             q: ''
-        //         }
-        //     }
-        // },
-
-        // { label: 'Kaart', icon: featherMap, route: '/map' },
-        // {
-        //     label: 'Verhalen', icon: featherBook, route: {
-        //         path: '/search',
-        //         queryParams: {
-        //             filters: JSON.stringify({
-        //                 type: {
-        //                     type: 2,
-        //                     fieldIds: ['type'],
-        //                     valueIds: ['https://schema.org/CreativeWork']
-        //                 }
-        //             }),
-        //             q: ''
-        //         }
-        //     }
-        // },
-        // { label: 'Over', icon: featherInfo, route: '/colofon' },
-        // { label: 'Contact', icon: featherMail, route: '/contact' },
-        // {
-        //     label: 'Referenties', icon: featherStar, route: {
-        //         path: '/search',
-        //         queryParams: {
-        //             filters: JSON.stringify({
-        //                 type: {
-        //                     type: 2,
-        //                     fieldIds: ['type'],
-        //                     valueIds: ['https://schema.org/ArchiveComponent']
-        //                 }
-        //             }),
-        //             q: ''
-        //         }
-        //     },
-        // }
-    ];
 
     private routeSub?: Subscription;
 
@@ -145,7 +76,6 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
                 this.setLayout(event.urlAfterRedirects || event.url);
             }
         });
-
         this.translate.get([
             'hemiw-theme.stories',
             'hemiw-theme.all_buildings',
@@ -255,11 +185,14 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
             this.bottomButtons = [
                 { label: translations['hemiw-theme.about_and_contact'], icon: featherInfo, route: '/colofon' },
             ];
+            if (NavButtonsComponent.DEBUG) {
+                console.log('[NavButtonsComponent] top button routes:', this.topButtons.map(b => b.route));
+                console.log('[NavButtonsComponent] middle button routes:', this.middleButtons.map(b => b.route));
+                console.log('[NavButtonsComponent] bottom button routes:', this.bottomButtons.map(b => b.route));
+            }
         });
 
-        if (NavButtonsComponent.DEBUG) {
-            console.log('[NavButtonsComponent] button routes:', this.buttons.map(b => b.route));
-        }
+
     }
 
     ngOnDestroy() {

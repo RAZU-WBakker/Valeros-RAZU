@@ -57,11 +57,14 @@
   top: 0;
   left: 0;
   width: 100vw;
-  /* height: 100vh; */
+  height: 100vh;
+  object-fit: cover;
+  object-position: center center;
+  /* display: block; */
   /* background-image: url('/assets/img/full-screen-image.jpg');
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat; */
-  z-index: -1;
+  z-index: -1000;
   pointer-events: none;
 }
