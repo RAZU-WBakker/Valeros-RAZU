@@ -1,10 +1,27 @@
 .fixed-search {
     position: fixed;
     top: 0;
-    z-index: 50;
+    /* z-index: 50;  <-- remove this to allow z-[9999] from HTML to win */
     /* center */
     left: 50%;
     transform: translateX(-50%);
     margin-top: 1rem;
-    /* Make sure it's above other content */
+}
+
+/* Responsive: move to bottom below 1100px */
+@media (max-width: 1099px) {
+    .fixed-search {
+        bottom: 0;
+        top: auto;
+        /* unset top so bottom takes effect */
+        margin-top: 0;
+        /* remove spacing used for top placement */
+        /* keep centered */
+        left: 50%;
+        transform: translateX(-50%);
+        /* optional: add a little breathing room from screen edge */
+        margin-bottom: 1rem;
+        /* optional: support iOS safe area */
+        padding-bottom: env(safe-area-inset-bottom);
+    }
 }

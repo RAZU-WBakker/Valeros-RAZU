@@ -17,3 +17,21 @@
     left: 50%;
     transform: translateX(-50%);
 }
+
+/* Responsive: make header a full-width top bar below 1100px */
+@media (max-width: 1099px) {
+    .header-fixed {
+        left: 0;
+        right: 0;
+        width: 100%;
+        /* remove rounded bottom on small screens */
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+    /* neutralize centering transform on small screens */
+    .header-center {
+        left: 0;
+        transform: none;
+    }
+}
