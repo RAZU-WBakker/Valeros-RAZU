@@ -33,7 +33,7 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
     menuOpen = false;
 
     isMobile(): boolean {
-        return window.matchMedia('(max-width: 1024px)').matches;
+        return window.matchMedia('(max-width: 1100px)').matches;
     }
 
     toggleMenu() {
