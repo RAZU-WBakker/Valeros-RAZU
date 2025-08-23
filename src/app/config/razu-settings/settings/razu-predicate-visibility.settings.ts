@@ -51,6 +51,9 @@ export const razuPredicateVisibilitySettings: PredicateVisibilitySettings = {
             'https://identifier.overheid.nl/tooi/def/thes/kern/c_3d782f30',
             'https://identifier.overheid.nl/tooi/def/thes/kern/c_de27ae7a',
             'https://identifier.overheid.nl/tooi/def/thes/kern/c_dfa0ff1f',
+            'https://huizenenmenseninwijk.nl/def/hemiw/mensengeschiedenis',
+            'https://huizenenmenseninwijk.nl/def/hemiw/bouwgeschiedenis',
+            'https://schema.org/image',
           ],
         },
       ],
@@ -70,7 +73,7 @@ export const razuPredicateVisibilitySettings: PredicateVisibilitySettings = {
     'http://schema.org/mainEntity',
     'http://purl.org/dc/terms/hasFormat',
     'https://data.razu.nl/def/ldto/seo',
-    'http://schema.org/image',
+
   ],
   hideTypeBadges: [
     'https://data.razu.nl/def/ldto/BeperkingGebruikGegevens',
