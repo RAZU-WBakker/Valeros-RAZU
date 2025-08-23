@@ -39,14 +39,14 @@
       <div class="flex-grow relative">
         <app-node-renderer [node]="node" />
       </div>
-      <!-- <div
-        class="absolute"
-        [ngClass]="[
-          shouldShowFileNextToTable() ? 'right-6 bottom-6' : 'right-0 bottom-0',
-        ]"
-      > -->
 
-    </div>
+      <app-snippet *ngIf="showSnippet" [altoUrl]="node?.['URL_bestand']?.[0]?.value" class="text-sm pr-32" />
+
+      <div class="absolute" [ngClass]="[
+          shouldShowFileNextToTable() ? 'right-6 bottom-6' : 'right-0 bottom-0',
+        ]"> -->
+
+      </div>
   </a>
 
   <!-- Details button always in the same spot for each card -->

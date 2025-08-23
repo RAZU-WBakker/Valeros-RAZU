@@ -150,15 +150,22 @@ export class ElasticService {
           size: Settings.search.elasticFilterTopHitsMax,
           order: order,
         },
-        aggs: {
+      };
+
+      const clusteringIsEnabled =
+        Object.keys(Settings.clustering.filterOptionValues).length > 0;
+      if (clusteringIsEnabled) {
+        // Retrieve hit IDs for each filter option value (e.g. "public domain" for the "license" filter option). We need these so we can check if we need to cluster values.
+        // Note that this is quite a big performance hit, especially when working with many filter options/values.
+        result[elasticFieldId].aggs = {
           field_hits: {
             top_hits: {
               size: Settings.search.elasticFilterTopHitsMax,
               _source: false,
             },
           },
-        },
-      };
+        };
+      }
       return result;
     }, {});
 
@@ -169,6 +176,8 @@ export class ElasticService {
       Settings.search.elasticFilterTopHitsMax,
     );
     queryData.aggs = { ...aggs };
+    queryData.size = 0;
+    queryData['_source'] = '';
 
     return await this.searchEndpoints(queryData);
   }

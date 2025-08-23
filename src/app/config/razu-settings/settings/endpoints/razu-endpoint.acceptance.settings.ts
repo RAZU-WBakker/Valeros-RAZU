@@ -19,5 +19,6 @@ export const razuEndpointSettings: EndpointSettings = {
     url: 'https://huizenenmenseninwijk.nl/process-url', // Used for token generation, see https://github.com/Regionaal-Archief-Zuid-Utrecht/SURA
     matchSubstring: 'opslag.huizenenmenseninwijk.nl',
   },
+  snippetServer: 'https://ontwikkel.viewer.razu.nl/snippet',
   proxyUrl: 'https://huizenenmenseninwijk.nl/cors-proxy',
 };

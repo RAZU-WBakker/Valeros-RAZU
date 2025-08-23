@@ -21,4 +21,5 @@ export const razuEndpointSettings: EndpointSettings = {
     matchSubstring: 'opslag.razu.nl',
   },
   proxyUrl: 'https://huizenenmenseninwijk.nl/cors-proxy',
+  snippetServer: 'https://viewer.razu.nl/snippet',
 };

@@ -193,88 +193,6 @@ export class FilterService {
     this.searchTrigger.emit({ clearFilters: false });
   }
 
-  // new helper function
-  private _getFieldDocCountsFromNodes(
-    nodes: any[],
-    filterOptions: FilterOptionsModel,
-  ): FieldDocCountsModel {
-    const docCountsByFieldId: FieldDocCountsModel = {};
-
-    for (const node of nodes) {
-      for (const [field, values] of Object.entries(node)) {
-        const filterOption = Object.values(filterOptions).find((option) =>
-          option.fieldIds.includes(field),
-        );
-
-        if (filterOption) {
-          if (!docCountsByFieldId[field]) {
-            docCountsByFieldId[field] = [];
-          }
-
-          for (const valueObj of values as { value: string }[]) {
-            docCountsByFieldId[field].push({
-              key: valueObj.value,
-              hitIds: [node['@id']?.[0]?.value || ''], // Extract hit IDs from `@id` field
-            });
-          }
-        }
-      }
-    }
-
-    return docCountsByFieldId;
-  }
-
-  // Alternative without elastic requests (get directly from node results)
-  // async updateFilterOptionValues(query: string, nodes: any[]) {
-  //   const filterOptions = this.options.value;
-  //   console.log('NODES', nodes);
-  //   // Extract filter options directly from the provided `nodes` array
-  //   const fieldDocCounts: FieldDocCountsModel = this._getFieldDocCountsFromNodes(
-  //     nodes,
-  //     filterOptions
-  //   );
-
-  //   for (const [_, filter] of Object.entries(filterOptions)) {
-  //     const filterValuesMap = new Map<string, string[]>();
-
-  //     filter.fieldIds.forEach((fieldId) => {
-  //       const docCountsForField = fieldDocCounts[fieldId] ?? [];
-  //       const docCountsToShow = docCountsForField.filter((d) => {
-  //         const valueId = d.key;
-  //         const shouldHideValueId = filter.hideValueIds?.includes(valueId);
-  //         if (!filter.showOnlyValueIds) {
-  //           return !shouldHideValueId;
-  //         }
-  //         return filter.showOnlyValueIds.includes(valueId);
-  //       });
-
-  //       docCountsToShow.forEach((d) => {
-  //         const id = d.key;
-  //         const hitIds = d.hitIds;
-
-  //         if (filterValuesMap.has(id)) {
-  //           filterValuesMap.set(id, filterValuesMap.get(id)!.concat(hitIds));
-  //         } else {
-  //           filterValuesMap.set(id, hitIds);
-  //         }
-  //       });
-  //     });
-
-  //     const filterValues: FilterOptionValueModel[] = Array.from(
-  //       filterValuesMap
-  //     ).map(([id, filterHitIds]) => ({
-  //       ids: [id],
-  //       filterHitIds: filterHitIds,
-  //     }));
-
-  //     const clusteredFilterValues =
-  //       this.clusters.clusterFilterOptionValues(filterValues);
-  //     filter.values = clusteredFilterValues;
-  //   }
-
-  //   this.options.next(filterOptions);
-  // }
-
   async updateFilterOptionValues(query: string) {
     const filterOptionsList: FilterOptionModel[] = Object.values(
       this.options.value,
@@ -291,7 +209,10 @@ export class FilterService {
 
     const filterOptions = this.options.value;
     for (const [_, filter] of Object.entries(filterOptions)) {
-      const filterValuesMap = new Map<string, string[]>();
+      const filterValuesMap = new Map<
+        string,
+        { hitIds: string[]; doc_count: number }
+      >();
 
       filter.fieldIds.forEach((fieldId) => {
         const elasticFieldId = this.data.replacePeriodsWithSpaces(fieldId);
@@ -311,19 +232,24 @@ export class FilterService {
         docCountsToShow.forEach((d) => {
           const id = d.key;
           const hitIds = d.hitIds;
+          const doc_count = d.doc_count;
 
           if (filterValuesMap.has(id)) {
-            filterValuesMap.set(id, filterValuesMap.get(id)!.concat(hitIds));
+            const existing = filterValuesMap.get(id)!;
+            existing.hitIds = existing.hitIds.concat(hitIds);
+            existing.doc_count += doc_count;
+            filterValuesMap.set(id, existing);
           } else {
-            filterValuesMap.set(id, hitIds);
+            filterValuesMap.set(id, { hitIds: hitIds, doc_count: doc_count });
           }
         });
       });
       const filterValues: FilterOptionValueModel[] = Array.from(
         filterValuesMap,
-      ).map(([id, filterHitIds]) => ({
+      ).map(([id, data]) => ({
         ids: [id],
-        filterHitIds: filterHitIds,
+        filterHitIds: data.hitIds,
+        filterHitCount: data.doc_count,
       }));
 
       const clusteredFilterValues =
