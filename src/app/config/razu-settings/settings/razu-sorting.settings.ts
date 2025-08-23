@@ -10,11 +10,13 @@ export const razuSortingSettings: SortingSettings = {
       fields: ['name.keyword'],
       label: 'Titel (A-Z)',
       order: SortOrder.Ascending,
+      naturalAddress: true,
     },
     'title-z-a': {
       fields: ['name.keyword'],
       label: 'Titel (Z-A)',
       order: SortOrder.Descending,
+      naturalAddress: true,
     },
   },
 };

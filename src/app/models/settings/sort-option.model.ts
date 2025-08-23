@@ -7,6 +7,7 @@ export interface SortOptionModel {
   label: string;
   order: SortOrder;
   boost?: { [id: string]: SortBoostModel };
+  naturalAddress?: boolean;
 }
 
 export type SortOptionsModel = {

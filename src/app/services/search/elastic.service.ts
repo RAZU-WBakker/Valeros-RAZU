@@ -283,6 +283,65 @@ export class ElasticService {
       return [];
     }
 
+    if (sort.naturalAddress) {
+      const fields = sort.fields.map((field) =>
+        this.data.replacePeriodsWithSpaces(field),
+      );
+
+      const scriptSource = `
+        def val = null;
+        for (def f : params.fields) {
+          if (doc.containsKey(f) && doc[f].size() != 0) {
+            def v = doc[f].value;
+            if (v != null && v.length() > 0) { val = v; break; }
+          }
+        }
+        if (val == null) return "";
+        String s = ((String)val).trim();
+        StringBuilder out = new StringBuilder();
+        StringBuilder num = new StringBuilder();
+        boolean inNum = false;
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+          int ci = s.charAt(i);
+          if (ci >= 48 && ci <= 57) { // '0'..'9'
+            num.append((char)ci);
+            inNum = true;
+          } else {
+            if (inNum) {
+              String digits = num.toString();
+              String padded = (digits.length() >= 10) ? digits : "0000000000".substring(digits.length()) + digits;
+              out.append(padded);
+              num.setLength(0);
+              inNum = false;
+            }
+            // ASCII lowercase for non-digits
+            if (ci >= 65 && ci <= 90) { ci = ci + 32; }
+            out.append((char)ci);
+          }
+        }
+        if (inNum) {
+          String digits = num.toString();
+          String padded = (digits.length() >= 10) ? digits : "0000000000".substring(digits.length()) + digits;
+          out.append(padded);
+        }
+        return out.toString();
+      `;
+
+      const entry: ElasticSortEntryModel = {
+        _script: {
+          type: 'string',
+          order: sort.order === SortOrder.Ascending ? 'asc' : 'desc',
+          script: {
+            lang: 'painless',
+            source: scriptSource,
+            params: { fields },
+          },
+        },
+      };
+      return [entry];
+    }
+
     const elasticSortEntries: ElasticSortEntryModel[] = sort.fields.map(
       (field) => {
         const elasticField = this.data.replacePeriodsWithSpaces(field);
@@ -409,7 +468,6 @@ export class ElasticService {
       // TODO: Fix issue with less results showing when including boost queries (e.g. empty search)
       queryData.query.bool.should = boostQueries;
     }
-
     return queryData;
   }
 
