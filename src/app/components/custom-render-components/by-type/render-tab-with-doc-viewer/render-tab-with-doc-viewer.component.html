@@ -7,19 +7,7 @@
 <div *ngIf="!loading && data?.node" class="node-data">
   <!-- name of each tab group should be unique -->
   <div class="tabs tabs-lift">
-    <label class="tab">
-      <input type="radio" name="my_tabs_4" checked="checked" />
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-4 me-2">
-        <path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9" />
-        <path d="M9 22V12h6v10M2 10.6L12 2l10 8.6" />
-      </svg>
-      Het pand
-    </label>
-    <div class="tab-content bg-base-100 border-base-300 p-2 docviewer"><app-doc-viewer [url]="buildinghistoryPDF"
-        [fileType]="FileType.PDF" [style.height]="!shownInTableCell ? '42rem' : '42rem'"
-        (error)="hasViewer.emit(false)">
-      </app-doc-viewer></div>
+
     <label class="tab">
       <input type="radio" name="my_tabs_4" checked="checked" />
 
@@ -30,14 +18,25 @@
         <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
       </svg>
-      De mensen
+      Historie en mensen
     </label>
     <div class="tab-content bg-base-100 border-base-300 p-2 docviewer"><app-doc-viewer [url]="peoplehistoryPDF"
         [fileType]="FileType.PDF" [style.height]="!shownInTableCell ? '42rem' : '42rem'"
         (error)="hasViewer.emit(false)">
       </app-doc-viewer></div>
-
-
+    <label class="tab">
+      <input type="radio" name="my_tabs_4" checked="checked" />
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-4 me-2">
+        <path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9" />
+        <path d="M9 22V12h6v10M2 10.6L12 2l10 8.6" />
+      </svg>
+      Bouw en architectuur
+    </label>
+    <div class="tab-content bg-base-100 border-base-300 p-2 docviewer"><app-doc-viewer [url]="buildinghistoryPDF"
+        [fileType]="FileType.PDF" [style.height]="!shownInTableCell ? '42rem' : '42rem'"
+        (error)="hasViewer.emit(false)">
+      </app-doc-viewer></div>
     <label class="tab">
       <input type="radio" name="my_tabs_4" />
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 36 36" fill="none"
@@ -50,7 +49,7 @@
         <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
         <line x1="21" y1="17.5" x2="27" y2="13.5"></line>
       </svg>
-      Metadata
+      Korte beschrijving
     </label>
     <div class="tab-content bg-base-100 border-base-300 p-6 docviewer"><app-node-table-view
         [node]="data?.node"></app-node-table-view></div>

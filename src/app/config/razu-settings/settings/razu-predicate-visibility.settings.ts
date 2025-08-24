@@ -73,6 +73,8 @@ export const razuPredicateVisibilitySettings: PredicateVisibilitySettings = {
     'http://schema.org/mainEntity',
     'http://purl.org/dc/terms/hasFormat',
     'https://data.razu.nl/def/ldto/seo',
+    'https://data.razu.nl/def/ldto/onderdeelVan',
+    'https://w3id.org/italia/onto/CLV/fullAddress',
 
   ],
   hideTypeBadges: [
