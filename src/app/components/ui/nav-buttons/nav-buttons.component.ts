@@ -16,6 +16,11 @@ import {
     featherImage
 } from '@ng-icons/feather-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Settings } from '../../../config/settings';
+import {
+    HeaderPosition,
+    HeaderSettings,
+} from '../../../models/settings/header-settings.model';
 
 interface NavButton {
     label: string;
@@ -31,6 +36,7 @@ interface NavButton {
 })
 export class NavButtonsComponent implements OnInit, OnDestroy {
     menuOpen = false;
+    readonly settings: HeaderSettings = Settings.ui.header;
 
     isMobile(): boolean {
         return window.matchMedia('(max-width: 1024px)').matches;
@@ -90,14 +96,14 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
             this.topButtons = [
                 { label: 'Kaart', icon: featherMap, route: '/map' },
                 {
-                    label: translations['hemiw-theme.stories'], icon: featherBook, route: {
+                    label: translations['hemiw-theme.all_buildings'], icon: featherHome, route: {
                         path: '/search',
                         queryParams: {
                             filters: JSON.stringify({
                                 type: {
                                     type: 2,
                                     fieldIds: ['type.keyword'],
-                                    valueIds: ['https://huizenenmenseninwijk.nl/def/hemiw/verhaal']
+                                    valueIds: ['https://w3id.org/italia/onto/CLV/Feature']
                                 }
                             }),
                             q: ''
@@ -119,38 +125,8 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                {
-                    label: translations['hemiw-theme.maps_and_profiles'], icon: featherImage, route: {
-                        path: '/search',
-                        queryParams: {
-                            filters: JSON.stringify({
-                                type: {
-                                    type: 2,
-                                    fieldIds: ['type.keyword'],
-                                    valueIds: ['https://huizenenmenseninwijk.nl/def/hemiw/map']
-                                }
-                            }),
-                            q: ''
-                        }
-                    }
-                },
             ];
             this.middleButtons = [
-                {
-                    label: translations['hemiw-theme.all_buildings'], icon: featherHome, route: {
-                        path: '/search',
-                        queryParams: {
-                            filters: JSON.stringify({
-                                type: {
-                                    type: 2,
-                                    fieldIds: ['type.keyword'],
-                                    valueIds: ['https://w3id.org/italia/onto/CLV/Feature']
-                                }
-                            }),
-                            q: ''
-                        }
-                    }
-                },
                 {
                     label: translations['hemiw-theme.all_streets'], icon: featherNavigation, route: {
                         path: '/search',
@@ -167,20 +143,50 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
                     }
                 },
                 {
-                    label: translations['hemiw-theme.all_people'], icon: featherUsers, route: {
+                    label: translations['hemiw-theme.stories'], icon: featherBook, route: {
                         path: '/search',
                         queryParams: {
                             filters: JSON.stringify({
                                 type: {
                                     type: 2,
                                     fieldIds: ['type.keyword'],
-                                    valueIds: ['https://personsincontext.org/model#PersonObservation']
+                                    valueIds: ['https://huizenenmenseninwijk.nl/def/hemiw/verhaal']
                                 }
                             }),
                             q: ''
                         }
                     }
                 },
+                {
+                    label: translations['hemiw-theme.maps_and_profiles'], icon: featherImage, route: {
+                        path: '/search',
+                        queryParams: {
+                            filters: JSON.stringify({
+                                type: {
+                                    type: 2,
+                                    fieldIds: ['type.keyword'],
+                                    valueIds: ['https://huizenenmenseninwijk.nl/def/hemiw/map']
+                                }
+                            }),
+                            q: ''
+                        }
+                    }
+                },
+                // {
+                //     label: translations['hemiw-theme.all_people'], icon: featherUsers, route: {
+                //         path: '/search',
+                //         queryParams: {
+                //             filters: JSON.stringify({
+                //                 type: {
+                //                     type: 2,
+                //                     fieldIds: ['type.keyword'],
+                //                     valueIds: ['https://personsincontext.org/model#PersonObservation']
+                //                 }
+                //             }),
+                //             q: ''
+                //         }
+                //     }
+                // },
             ];
             this.bottomButtons = [
                 { label: translations['hemiw-theme.about_and_contact'], icon: featherInfo, route: '/colofon' },

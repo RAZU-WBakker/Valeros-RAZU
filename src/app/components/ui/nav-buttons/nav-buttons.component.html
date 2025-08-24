@@ -19,11 +19,63 @@
       </a> -->
     </div>
     <ng-template #desktopGrid>
-      <!-- DaisyUI Dock replacing custom bottom tabs/menu -->
-      <div
-        class="hidden min-[1100px]:flex dock dock-bottom dock-lg fixed bottom-0 left-0 right-0 w-full z-50 bg-base-100/90 backdrop-blur shadow-lg items-stretch"
+      <div class="navbar bg-base-100 shadow-sm fixed top-[calc(100vh/2)] h-16 overflow-visible">
+        <div class="navbar-start">
+        </div>
+        <div class="navbar-center hidden lg:flex">
+          <ul class="menu menu-horizontal px-1">
+            <ng-container *ngFor="let btn of topButtons">
+              <li>
+                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
+                  routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
+                  [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
+                  [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
+                  [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+                  [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
+                  <ng-icon [svg]="btn.icon" class="text-sm pb-2" aria-hidden="true"></ng-icon>
+                  <span class="text-[0.9rem]  leading-none hidden sm:block">{{ btn.label }}</span>
+                </a>
+              </li>
+            </ng-container>
+            <img *ngIf="settings.showLogo" [src]="settings.logoPath" alt="Logo" [class.mr-3]="settings.showTitle"
+              class="h-64 overflow-visible -my-30" />
+            <ng-container *ngFor="let btn of middleButtons">
+              <li>
+                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
+                  routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
+                  [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
+                  [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
+                  [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+                  [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
+                  <ng-icon [svg]="btn.icon" class="text-sm pb-2" aria-hidden="true"></ng-icon>
+                  <span class="text-[0.9rem]  leading-none hidden sm:block">{{ btn.label }}</span>
+                </a>
+              </li>
+            </ng-container>
+
+          </ul>
+        </div>
+        <div class="navbar-end">
+          <ul class="menu menu-horizontal px-1">
+            <ng-container *ngFor="let btn of bottomButtons">
+              <li>
+                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
+                  routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
+                  [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
+                  [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
+                  [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+                  [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
+                  <ng-icon [svg]="btn.icon" class="text-sm pb-2" aria-hidden="true"></ng-icon>
+                  <span class="text-[0.9rem]  leading-none hidden sm:block">{{ btn.label }}</span>
+                </a>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+        <!-- <div
+        class="hidden min-[1100px]:flex dock dock-bottom dock-xl fixed bottom-0 left-0 right-0 w-full z-50 bg-base-100/90 backdrop-blur shadow-lg items-stretch"
         role="toolbar" aria-label="Navigation">
-        <!-- Top buttons -->
+
         <ng-container *ngFor="let btn of topButtons">
           <a class="dock-item dock-active tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
             routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
@@ -31,11 +83,11 @@
             [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
             [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
             [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-            <ng-icon [svg]="btn.icon" class="text-xl" aria-hidden="true"></ng-icon>
-            <span class="text-[0.5rem] leading-none hidden sm:block">{{ btn.label }}</span>
+            <ng-icon [svg]="btn.icon" class="text-sm pb-2" aria-hidden="true"></ng-icon>
+            <span class="text-[0.9rem]  leading-none hidden sm:block">{{ btn.label }}</span>
           </a>
         </ng-container>
-        <!-- Middle buttons -->
+
         <ng-container *ngFor="let btn of middleButtons">
           <a class="dock-item dock-active tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
             routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
@@ -43,22 +95,22 @@
             [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
             [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
             [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-            <ng-icon [svg]="btn.icon" class="text-xl" aria-hidden="true"></ng-icon>
-            <span class="text-[0.5rem] leading-none">{{ btn.label }}</span>
+            <ng-icon [svg]="btn.icon" class="text-sm" aria-hidden="true"></ng-icon>
+            <span class="text-[0.9rem]  leading-none">{{ btn.label }}</span>
           </a>
         </ng-container>
-        <!-- Bottom buttons -->
+
         <ng-container *ngFor="let btn of bottomButtons">
-          <a class="dock-item dock-active tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
+          <a class="dock-item dock-active tooltip tooltip-top btn btn-ghost btn-xl flex flex-col gap-0"
             routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
             [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
             [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
             [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
             [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-            <ng-icon [svg]="btn.icon" class="text-xl" aria-hidden="true"></ng-icon>
-            <span class="text-[0.5rem] leading-none">{{ btn.label }}</span>
+            <ng-icon [svg]="btn.icon" class="text-sm" aria-hidden="true"></ng-icon>
+            <span class="text-[0.9rem]  leading-none">{{ btn.label }}</span>
           </a>
-        </ng-container>
+        </ng-container> -->
       </div>
       <!-- <div class="center-grid-content">
         <div class="nav-section nav-section-top">
@@ -97,7 +149,7 @@
   <ng-template #tabs>
     <!-- DaisyUI Dock replacing custom bottom tabs/menu -->
     <div
-      class="hidden min-[1100px]:flex dock dock-bottom dock-lg fixed bottom-0 left-0 right-0 w-full z-50 bg-base-100/90 backdrop-blur shadow-lg items-stretch"
+      class="hidden min-[1100px]:flex dock dock-bottom dock-xl fixed bottom-0 left-0 right-0 w-full z-50 bg-base-100/90 backdrop-blur shadow-lg items-stretch"
       role="toolbar" aria-label="Navigation">
       <!-- Top buttons -->
       <ng-container *ngFor="let btn of topButtons">
@@ -108,7 +160,7 @@
           [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
           [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
           <ng-icon [svg]="btn.icon" class="text-xl" aria-hidden="true"></ng-icon>
-          <span class="text-[0.5rem] leading-none hidden sm:block">{{ btn.label }}</span>
+          <span class="text-[0.9rem] leading-none hidden sm:block">{{ btn.label }}</span>
         </a>
       </ng-container>
       <!-- Middle buttons -->
@@ -120,7 +172,7 @@
           [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
           [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
           <ng-icon [svg]="btn.icon" class="text-xl" aria-hidden="true"></ng-icon>
-          <span class="text-[0.5rem] leading-none">{{ btn.label }}</span>
+          <span class="text-[0.9rem] leading-none">{{ btn.label }}</span>
         </a>
       </ng-container>
       <!-- Bottom buttons -->
@@ -132,7 +184,7 @@
           [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
           [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
           <ng-icon [svg]="btn.icon" class="text-xl" aria-hidden="true"></ng-icon>
-          <span class="text-[0.5rem] leading-none">{{ btn.label }}</span>
+          <span class="text-[0.9rem] leading-none">{{ btn.label }}</span>
         </a>
       </ng-container>
     </div>

@@ -210,6 +210,24 @@
   align-items: center;
 }
 
+/* Ensure DaisyUI dock items expand evenly */
+:host ::ng-deep .dock {
+  display: flex;
+}
+
+:host ::ng-deep .dock .dock-item {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  /* allow flexbox to shrink/grow */
+  width: 100% !important;
+  /* ensure full width within its flex slot */
+}
+
+:host ::ng-deep .dock .dock-item .leading-none {
+  white-space: normal;
+  /* allow wrapping if needed */
+  text-align: center;
+}
 
 .center-grid .nav-btn {
   flex: 0 0 25%;
