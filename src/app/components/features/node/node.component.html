@@ -1,9 +1,9 @@
-<div
-  class="flex w-full bg-base-100 border mb-4 shadow hover:shadow-lg transition-shadow duration-200 min-h-[calc(100%_-_1rem)] relative"
+<div class="flex w-full bg-base-100 border mb-4 shadow hover:shadow-lg transition-shadow duration-200 relative"
   *ngIf="node" [ngClass]="[
     (shouldShowSectionNextToTable() | async)
       ? 'p-0 flex flex-col node-breakpoint'
       : 'p-6',
+    details.showing.value ? 'min-h-full' : 'min-h-[calc(100%_-_1rem)]'
   ]" [attr.data-scroll-id]="encodeURIComponent(nodes.getId(node))" role="main" aria-labelledby="search-results"
   [attr.aria-label]="title">
   <!-- File renderer in details view, thumb on search page (left side of node) -->

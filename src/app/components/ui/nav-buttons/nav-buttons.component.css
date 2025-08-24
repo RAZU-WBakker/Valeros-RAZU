@@ -211,8 +211,10 @@
 }
 
 /* Ensure DaisyUI dock items expand evenly */
-:host ::ng-deep .dock {
-  display: flex;
+@media (min-width: 1100px) {
+  :host ::ng-deep .dock {
+    display: flex;
+  }
 }
 
 :host ::ng-deep .dock .dock-item {
