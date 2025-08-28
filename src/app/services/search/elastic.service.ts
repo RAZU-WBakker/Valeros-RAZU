@@ -250,7 +250,7 @@ export class ElasticService {
       // Debug: log ES request per endpoint
       // Note: large logs; remove when stable
       // eslint-disable-next-line no-console
-      console.debug('[ElasticService] POST', endpoint.elastic, queryData);
+      // console.debug('[ElasticService] POST', endpoint.elastic, queryData);
 
       const searchPromise: Promise<estypes.SearchResponse<T>> =
         this.api.postData<estypes.SearchResponse<T>>(

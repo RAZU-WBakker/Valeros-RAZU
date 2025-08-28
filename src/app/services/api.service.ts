@@ -30,7 +30,7 @@ export class ApiService {
         try {
           // Debug request payload
           // eslint-disable-next-line no-console
-          console.debug('[ApiService] POST', url, data);
+          // console.debug('[ApiService] POST', url, data);
           const response = await lastValueFrom(
             this.http.post<T>(url, data).pipe(
               catchError((error) => {
