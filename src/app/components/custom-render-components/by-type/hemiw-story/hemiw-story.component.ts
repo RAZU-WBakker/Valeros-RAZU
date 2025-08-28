@@ -28,6 +28,7 @@ export class HemiwStoryComponent extends TypeRenderComponent implements OnInit {
     // Loading state
     loading = false;
     documentUrl = '';
+    associatedMediaUrls: string[] = [];
 
     // UI state
     showCopyrightInfo = false;
@@ -43,18 +44,25 @@ export class HemiwStoryComponent extends TypeRenderComponent implements OnInit {
     //
     ngOnInit(): void {
         this.loading = true;
-        console.log(this.data);
 
+        // existing code...
         const documentUrl = this.data?.node?.['@id']?.[0]?.value;
-
         if (documentUrl) {
             this.urlService.proxyUrl(documentUrl).then(url => {
                 this.documentUrl = url;
             });
-        } else {
-            console.warn('No document URL on node:', this.data?.node);
         }
-        this.loading = false;
+
+        // NEW: extract associatedMedia URLs
+        const assoc = this.data?.node?.['https://schema.org/associatedMedia'] as Array<{ value?: string }> | undefined;
+        const rawUrls = (assoc ?? []).map(x => x?.value).filter((v): v is string => !!v);
+
+        // If proxying is needed:
+        Promise.all(rawUrls.map(u => this.urlService.proxyUrl(u)))
+            .then(urls => {
+                this.associatedMediaUrls = urls;
+            })
+            .finally(() => (this.loading = false));
     }
 
 

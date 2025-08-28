@@ -49,7 +49,7 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
     closeMenu() {
         this.menuOpen = false;
     }
-    private static DEBUG = true;
+    private static DEBUG = false;
 
     constructor(private router: Router, private routing: RoutingService, private translate: TranslateService) {
         if (NavButtonsComponent.DEBUG) {

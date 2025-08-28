@@ -1,0 +1,19 @@
+<!-- <app-hop-link
+  [data]="{
+    value: data?.value ?? '',
+    hopLinkSettings: {
+      preds: ['https://data.razu.nl/def/ldto/dekkingInTijdBeginDatum'],
+      showHops: false,
+    },
+  }"
+  (hopObjIdsRetrieved)="this.hasBeginDate = $event.length > 0"
+/> -->
+@if(url) {
+<div>
+  <a class="btn btn-primary mt-2" [href]="url" target="_blank" rel="noopener noreferrer">
+    Download
+  </a>
+</div>
+}@else {
+
+}
