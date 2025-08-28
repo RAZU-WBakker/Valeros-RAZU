@@ -53,6 +53,7 @@ export const razuPredicateVisibilitySettings: PredicateVisibilitySettings = {
             'https://identifier.overheid.nl/tooi/def/thes/kern/c_dfa0ff1f',
             'https://huizenenmenseninwijk.nl/def/hemiw/mensengeschiedenis',
             'https://huizenenmenseninwijk.nl/def/hemiw/bouwgeschiedenis',
+            'https://huizenenmenseninwijk.nl/def/hemiw/primaryimage',
             'https://schema.org/image',
           ],
         },
