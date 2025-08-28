@@ -35,6 +35,8 @@ export class NodeLabelComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['label'] || changes['highlightStr']) {
       this.updateRenderedLabelHtml();
+      // console.log('label', this.label);
+      // console.log('renderedLabelHtml', this.renderedLabelHtml);
     }
   }
 
@@ -77,7 +79,8 @@ export class NodeLabelComponent implements OnInit, OnChanges {
       return;
     }
 
-    const strippedLabel = striptags(this.label);
+    // const strippedLabel = striptags(this.label);
+    const strippedLabel = this.label;
     let labelToHighlight = strippedLabel;
     if (this.shouldTruncate && this.showingTruncatedLabel) {
       labelToHighlight = truncate(strippedLabel, this.maxChars);
