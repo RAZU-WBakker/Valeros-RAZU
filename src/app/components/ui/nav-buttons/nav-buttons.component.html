@@ -204,7 +204,7 @@
       <button type="button" class="btn btn-ghost btn-sm" (click)="closeMenu()" aria-label="Close menu">✖</button>
     </div>
     <ul class="menu w-full">
-      <li class="menu-title">{{ 'hemiw-theme.discover_stories' | translate }}</li>
+      <!-- <li class="menu-title">{{ 'hemiw-theme.discover_stories' | translate }}</li> -->
       <li *ngFor="let btn of topButtons">
         <a routerLinkActive="active bg-primary text-primary-content" #rla="routerLinkActive"
           [routerLinkActiveOptions]="{ exact: false }" (click)="debugRoute(btn); closeMenu()"
@@ -215,7 +215,7 @@
           {{ btn.label }}
         </a>
       </li>
-      <li class="menu-title mt-2">{{ 'hemiw-theme.explore_data' | translate }}</li>
+      <!-- <li class="menu-title mt-2">{{ 'hemiw-theme.explore_data' | translate }}</li> -->
       <li *ngFor="let btn of middleButtons">
         <a routerLinkActive="active bg-primary text-primary-content" #rla="routerLinkActive"
           [routerLinkActiveOptions]="{ exact: false }" (click)="debugRoute(btn); closeMenu()"
