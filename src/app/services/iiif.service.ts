@@ -12,12 +12,27 @@ import { UrlService } from './url.service';
 })
 export class IIIFService {
   private _blobUrls: Set<string> = new Set();
-
+  private _DEBUG = false;
   constructor(
     private sparql: SparqlService,
     private url: UrlService,
     private imageService: ImageService,
-  ) {}
+  ) { }
+
+  private _createFullImageServiceURLforImage(url: string, width: number, height: number): string {
+    const bucket = 't01'
+    const parsedUrl = url.split('/').pop() || '';
+    const returnedUrl = `https://iiif.razu.nl/iiif/2/${bucket}__${parsedUrl}/full/${width},/0/default.jpg`
+    return returnedUrl;
+  }
+
+  private _createImageServiceURLforImage(url: string, width: number, height: number): string {
+    const bucket = 't01'
+    const parsedUrl = url.split('/').pop() || '';
+    const returnedUrl = `https://iiif.razu.nl/iiif/2/${bucket}__${parsedUrl}`
+    return returnedUrl;
+  }
+
 
   private async _getCanvasesFromUrls(imgUrls: string[]): Promise<Canvas[]> {
     // imgUrls = [
@@ -52,13 +67,34 @@ export class IIIFService {
               type: 'Annotation',
               motivation: 'painting',
               body: {
-                id: url,
+                id: this._createFullImageServiceURLforImage(url, width, height),
                 type: 'Image',
                 format: mime.getType(url) ?? 'image/jpeg',
-                height,
-                width,
+                // height,
+                // width,
+                service: [
+                  {
+                    id: `${this._createImageServiceURLforImage(url, width, height)}`,
+                    type: 'ImageService2',
+                    profile: 'http://iiif.io/api/image/2/level2.json',
+                  },
+                ],
               },
               target: `https://example.org/canvas/p${index + 1}`,
+            },
+          ],
+        },
+      ],
+      thumbnail: [
+        {
+          id: `${this._createImageServiceURLforImage(url, width, height)}/full/200,/0/default.jpg`,
+          type: 'Image',
+          format: mime.getType(url) ?? 'image/jpeg',
+          service: [
+            {
+              id: `${this._createImageServiceURLforImage(url, width, height)}`,
+              type: 'ImageService2',
+              profile: 'http://iiif.io/api/image/2/level2.json',
             },
           ],
         },
@@ -170,13 +206,13 @@ export class IIIFService {
         ],
         seeAlso: item.altoUrl
           ? [
-              {
-                '@id': item.altoUrl,
-                profile: 'http://www.loc.gov/standards/alto/v3/alto.xsd',
-                format: 'text/xml+alto',
-                label: 'METS-ALTO XML',
-              } as any,
-            ]
+            {
+              '@id': item.altoUrl,
+              profile: 'http://www.loc.gov/standards/alto/v3/alto.xsd',
+              format: 'text/xml+alto',
+              label: 'METS-ALTO XML',
+            } as any,
+          ]
           : [],
         thumbnail: [
           {
@@ -208,7 +244,7 @@ export class IIIFService {
 
     const manifest: Manifest = {
       '@context': 'http://iiif.io/api/presentation/3/context.json',
-      id: id,
+      id: id ? id : 'https://example.org/sample',
       type: 'Manifest',
       label: {
         nl: [label],
@@ -233,6 +269,7 @@ export class IIIFService {
     imageUrls?: string[],
   ): Promise<string | null> {
     let canvases: Canvas[] = [];
+    let manifest: Manifest;
     if (imageUrls) {
       console.log('Creating manifest from image URLs', imageUrls);
       canvases = await this._getCanvasesFromUrls(imageUrls);
@@ -244,8 +281,7 @@ export class IIIFService {
     if (!canvases || canvases.length === 0) {
       return null;
     }
-
-    const manifest: Manifest = await this.generateCanvasesManifest(
+    manifest = await this.generateCanvasesManifest(
       nodeId ?? '',
       nodeLabel ?? '',
       canvases,
