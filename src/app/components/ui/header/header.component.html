@@ -10,7 +10,7 @@
     <button class="text-left inline-flex items-center" [class.mr-3]="settings.showTitle || settings.showColofonButton"
       (click)="onButtonClicked('')" role="navigation" aria-labelledby="header-home-button">
       <img *ngIf="settings.showLogo" [src]="settings.logoPath" alt="Logo" [class.mr-3]="settings.showTitle"
-        class="h-8" />
+        class="h-16" />
       <div *ngIf="settings.showTitle">
         <h1>
           <div class="font-semibold" [innerHTML]="'general.title' | translate"></div>
