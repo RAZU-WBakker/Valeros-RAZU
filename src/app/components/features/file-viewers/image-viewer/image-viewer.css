@@ -1,0 +1,21 @@
+/* Responsive sizing to prevent overflow in stacked layouts */
+.viewer-stage {
+    height: 70vh;
+    overflow: hidden;
+    /* ensure inner content doesn't push height */
+}
+
+/* When the page switches to stacked layout (~ <= 1100px), reduce viewer height */
+@media (max-width: 1100px) {
+    .viewer-stage {
+        height: 24rem;
+    }
+}
+
+/* Optional: keep the thumbnails compact on small widths */
+@media (max-width: 1100px) {
+    .viewer-thumbs img {
+        max-height: 3.5rem;
+        /* ~56px */
+    }
+}

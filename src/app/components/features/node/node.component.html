@@ -3,7 +3,7 @@
     (shouldShowSectionNextToTable() | async)
       ? 'p-0 flex flex-col node-breakpoint'
       : 'p-6',
-    details.showing.value ? 'min-h-full' : 'min-h-[calc(100%_-_1rem)]'
+    details.showing.value ? 'h-full min-h-0' : 'min-h-[calc(100%_-_1rem)]'
   ]" [attr.data-scroll-id]="encodeURIComponent(nodes.getId(node))" role="main" aria-labelledby="search-results"
   [attr.aria-label]="title">
   <!-- File renderer in details view, thumb on search page (left side of node) -->
@@ -48,8 +48,8 @@
   </div>
 
   <!-- Details page node table -->
-  <div [ngClass]="(shouldShowSectionNextToTable() | async) ? 'p-6' : 'p-0'" class="flex-grow relative"
-    *ngIf="details.showing.value">
+  <div [ngClass]="(shouldShowSectionNextToTable() | async) ? 'p-6' : 'p-0'"
+    class="flex-1 min-h-0 overflow-auto relative" *ngIf="details.showing.value">
     <div class="text-lg mr-6 font-bold" *ngIf="showTitle">
       <app-node-link [url]="details.getLink(node)" [label]="title" [shouldTruncate]="false" />
     </div>
