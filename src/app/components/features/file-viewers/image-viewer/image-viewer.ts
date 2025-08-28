@@ -10,7 +10,7 @@ import { MiradorComponent } from '../../file-viewers/mirador/mirador.component';
     styleUrl: './image-viewer.css'
 })
 export class ImageViewerComponent implements OnChanges, AfterViewInit {
-    @Input() imageUrls?: string[];
+    @Input() imageUrls: string[] = [];
     @Input() imageLabel?: string;
 
     // Index of the currently shown image in the carousel

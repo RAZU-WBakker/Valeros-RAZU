@@ -47,7 +47,7 @@ export class NodeImagesComponent implements OnChanges, AfterViewInit {
   // 200px thumbnail variant (kept for potential future use)
   getThumbUrl(originalUrl: string): string {
     if (!originalUrl) return '';
-    return `${this.iiifBase(originalUrl)}/full/200,/0/default.jpg`;
+    return `${this.iiifBase(originalUrl)}/full/400,/0/default.jpg`;
   }
 
   onImageLoad() {
