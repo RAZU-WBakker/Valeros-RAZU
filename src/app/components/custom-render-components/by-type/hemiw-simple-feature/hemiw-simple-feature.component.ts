@@ -16,12 +16,12 @@ import { SparqlService } from '../../../../services/sparql.service';
 registerLocaleData(localeNl);
 
 @Component({
-    selector: 'app-hemiw-story',
+    selector: 'app-hemiw-simple-feature',
     imports: [NgIf, DocViewerComponent, NodeTableViewComponent],
-    templateUrl: './hemiw-story.component.html',
-    styleUrls: ['./hemiw-story.component.css']
+    templateUrl: './hemiw-simple-feature.component.html',
+    styleUrls: ['./hemiw-simple-feature.component.css']
 })
-export class HemiwStoryComponent extends TypeRenderComponent implements OnInit {
+export class HemiwSimpleFeatureComponent extends TypeRenderComponent implements OnInit {
     // Arrays to store IDs retrieved from hop-link components
     public FileType = FileType;
     shownInTableCell = true;
