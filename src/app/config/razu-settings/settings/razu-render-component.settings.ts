@@ -12,7 +12,7 @@ import {
 import { renderComponentSettings } from '../../default-settings/settings/render-component.settings';
 import { RenderTabWithDocViewerComponent } from '../../../components/custom-render-components/by-type/render-tab-with-doc-viewer/render-tab-with-doc-viewer.component';
 import { HemiwStoryComponent } from '../../../components/custom-render-components/by-type/hemiw-story/hemiw-story.component';
-import { BijlagenDownloadComponent } from '../../../components/custom-render-components/by-predicate/bijlagen-download/bijlagen-download.component';
+import { HemiwSimpleFeatureComponent } from '../../../components/custom-render-components/by-type/hemiw-simple-feature/hemiw-simple-feature.component';
 
 export const razuRenderComponentSettings: RenderComponentsSettings = {
   [RenderMode.ByType]: [
@@ -35,6 +35,12 @@ export const razuRenderComponentSettings: RenderComponentsSettings = {
         'https://huizenenmenseninwijk.nl/def/hemiw/verhaal',
       ],
     },
+    {
+      component: HemiwSimpleFeatureComponent,
+      predicates: [
+        'https://huizenenmenseninwijk.nl/def/hemiw/simpleFeature',
+      ]
+    }
   ],
   [RenderMode.ByPredicate]: [
     ...renderComponentSettings[RenderMode.ByPredicate],
@@ -103,10 +109,6 @@ export const razuRenderComponentSettings: RenderComponentsSettings = {
     {
       component: LdtoUrlBestandComponent,
       predicates: ['https://data.razu.nl/def/ldto/URLBestand'],
-    },
-    {
-      component: BijlagenDownloadComponent,
-      predicates: ['https://schema.org/associatedMedia'],
     },
     {
       component: FileRendererComponent,
