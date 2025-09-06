@@ -12,7 +12,7 @@ export class ScrollService {
 
   private _scrollIdToReturnTo: string | null = null;
 
-  private static DEBUG = false;
+  private static DEBUG = true;
 
   constructor(
     public nodes: NodeService,
@@ -57,11 +57,8 @@ export class ScrollService {
     // TODO: Properly wait for search results page to have completed rendering instead of using timeout "hack"
     //  Note that search results remain in the DOM when going to the details view (but invisible), therefore are not reloaded asynchronously anymore, drastically reducing the time we need to wait before initiating scroll
     setTimeout(() => {
-      if (!this._scrollContainer) {
-        if (ScrollService.DEBUG) {
-          console.warn('Scroll container is undefined');
-        }
-        return;
+      if (!this._scrollContainer && ScrollService.DEBUG) {
+        console.warn('Scroll container is undefined (not required for window scroll)');
       }
       if (!idToScrollTo) {
         if (ScrollService.DEBUG) {
@@ -89,15 +86,25 @@ export class ScrollService {
         );
       }
 
-      const containerTop =
-        this._scrollContainer.nativeElement.getBoundingClientRect().top;
-      const elementTop = searchResultElem.getBoundingClientRect().top;
-      const offset = elementTop - containerTop;
+      const targetEl = searchResultElem as HTMLElement;
 
-      this._scrollContainer.nativeElement.scrollTo({
-        top: this._scrollContainer.nativeElement.scrollTop + offset,
-        behavior: 'smooth',
+      // Use double rAF to allow layout/paint to settle before measuring
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // Estimate header offset from the header element if present, otherwise default to 64px (pt-16)
+          const headerEl = document.querySelector('app-header') as HTMLElement | null;
+          const headerOffset = Math.round(headerEl?.getBoundingClientRect().height ?? 64) + 64;
+
+          const absoluteTop = window.scrollY + targetEl.getBoundingClientRect().top;
+          if (ScrollService.DEBUG) {
+            console.log('Scrolling window to', absoluteTop - headerOffset, '(headerOffset:', headerOffset, ')');
+          }
+          window.scrollTo({ top: absoluteTop - headerOffset, behavior: 'smooth' });
+
+          // Clear the stored id so we don't keep trying to scroll again next time
+          this._scrollIdToReturnTo = null;
+        });
       });
-    }, 100);
+    }, 250);
   }
 }
