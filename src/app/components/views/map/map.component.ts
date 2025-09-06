@@ -80,13 +80,26 @@ export class MapComponent implements OnInit, OnDestroy {
                     const legendExpand = new Expand({
                         view: this.view,
                         content: legend,
-                        expanded: false,
+                        expanded: true,
                         expandIcon: "legend-right",
                         expandTooltip: "Legenda"
                     });
 
+                    // Add LayerList widget in an Expand container
+                    const layerList = new LayerList({
+                        view: this.view
+                    });
+
+                    const layerListExpand = new Expand({
+                        view: this.view,
+                        content: layerList,
+                        expanded: false,
+                        expandIcon: "layers",
+                        expandTooltip: "Kaartlagen"
+                    });
+
                     // Add the widgets to the bottom-right corner of the view
-                    this.view.ui.add(legendExpand, "top-right");
+                    this.view.ui.add([layerListExpand, legendExpand], "top-right");
 
                     // Move zoom buttons to bottom-right
                     this.view.ui.move(["zoom"], "top-right");

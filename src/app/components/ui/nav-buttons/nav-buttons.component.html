@@ -2,31 +2,16 @@
   <ng-container *ngIf="layout === 'center-grid'; else tabs">
     <!-- Mobile stacked version -->
     <div class="hidden min-[1100px]:block" *ngIf="isMobile(); else desktopGrid">
-      <!-- <a *ngFor="let btn of topButtons" class="nav-btn mobile" (click)="debugRoute(btn)"
-        [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
-        [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-        <span class="nav-label">{{ btn.label }}</span>
-      </a>
-      <a *ngFor="let btn of middleButtons" class="nav-btn mobile" (click)="debugRoute(btn)"
-        [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
-        [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-        <span class="nav-label">{{ btn.label }}</span>
-      </a>
-      <a *ngFor="let btn of bottomButtons" class="nav-btn mobile" (click)="debugRoute(btn)"
-        [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
-        [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-        <span class="nav-label">{{ btn.label }}</span>
-      </a> -->
     </div>
     <ng-template #desktopGrid>
-      <div class="navbar bg-base-100 shadow-sm fixed top-[calc(100vh/2)] h-16 overflow-visible">
+      <div class="navbar bg-base-100 shadow-sm fixed bottom-[calc(100vh/3)] h-32 overflow-visible">
         <div class="navbar-start">
         </div>
         <div class="navbar-center hidden lg:flex">
           <ul class="menu menu-horizontal px-1">
             <ng-container *ngFor="let btn of topButtons">
               <li>
-                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
+                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0 h-32"
                   routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
                   [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
                   [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
@@ -38,10 +23,10 @@
               </li>
             </ng-container>
             <img *ngIf="settings.showLogo" [src]="settings.logoPath" alt="Logo" [class.mr-3]="settings.showTitle"
-              class="h-64 overflow-visible -my-30" />
+              class="h-80 overflow-visible -my-25" />
             <ng-container *ngFor="let btn of middleButtons">
               <li>
-                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
+                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0 h-32"
                   routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
                   [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
                   [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
@@ -59,7 +44,7 @@
           <ul class="menu menu-horizontal px-1">
             <ng-container *ngFor="let btn of bottomButtons">
               <li>
-                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
+                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0 h-32"
                   routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
                   [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
                   [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
@@ -72,78 +57,7 @@
             </ng-container>
           </ul>
         </div>
-        <!-- <div
-        class="hidden min-[1100px]:flex dock dock-bottom dock-xl fixed bottom-0 left-0 right-0 w-full z-50 bg-base-100/90 backdrop-blur shadow-lg items-stretch"
-        role="toolbar" aria-label="Navigation">
-
-        <ng-container *ngFor="let btn of topButtons">
-          <a class="dock-item dock-active tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
-            routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
-            [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
-            [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
-            [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
-            [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-            <ng-icon [svg]="btn.icon" class="text-sm pb-2" aria-hidden="true"></ng-icon>
-            <span class="text-[0.9rem]  leading-none hidden sm:block">{{ btn.label }}</span>
-          </a>
-        </ng-container>
-
-        <ng-container *ngFor="let btn of middleButtons">
-          <a class="dock-item dock-active tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
-            routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
-            [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
-            [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
-            [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
-            [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-            <ng-icon [svg]="btn.icon" class="text-sm" aria-hidden="true"></ng-icon>
-            <span class="text-[0.9rem]  leading-none">{{ btn.label }}</span>
-          </a>
-        </ng-container>
-
-        <ng-container *ngFor="let btn of bottomButtons">
-          <a class="dock-item dock-active tooltip tooltip-top btn btn-ghost btn-xl flex flex-col gap-0"
-            routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
-            [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
-            [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
-            [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
-            [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-            <ng-icon [svg]="btn.icon" class="text-sm" aria-hidden="true"></ng-icon>
-            <span class="text-[0.9rem]  leading-none">{{ btn.label }}</span>
-          </a>
-        </ng-container> -->
       </div>
-      <!-- <div class="center-grid-content">
-        <div class="nav-section nav-section-top">
-          <div class="nav-section-title ">{{'hemiw-theme.discover_stories' | translate}}</div>
-          <div class="button-grid">
-            <a *ngFor="let btn of topButtons" class="nav-btn nav-btn-top shadow-sm hover:shadow transition-shadow"
-              (click)="debugRoute(btn)" [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
-              [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-              <ng-icon [svg]="btn.icon" class="nav-icon" aria-hidden="true"></ng-icon>
-              <span class="nav-label">{{ btn.label }}</span>
-            </a>
-          </div>
-        </div>
-        <div class="nav-section nav-section-middle">
-          <div class="nav-section-title ">{{"hemiw-theme.explore_data" | translate}}</div>
-          <div class="button-grid">
-            <a *ngFor="let btn of middleButtons" class="nav-btn nav-btn-middle shadow-sm hover:shadow transition-shadow"
-              (click)="debugRoute(btn)" [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
-              [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-              <ng-icon [svg]="btn.icon" class="nav-icon" aria-hidden="true"></ng-icon>
-              <span class="nav-label">{{ btn.label }}</span>
-            </a>
-          </div>
-        </div>
-        <div class="nav-section nav-section-bottom">
-          <a *ngFor="let btn of bottomButtons" class="nav-btn nav-btn-bottom shadow-sm hover:shadow transition-shadow"
-            (click)="debugRoute(btn)" [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
-            [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null">
-            <ng-icon [svg]="btn.icon" class="nav-icon" aria-hidden="true"></ng-icon>
-            <span class="nav-label">{{ btn.label }}</span>
-          </a>
-        </div>
-      </div> -->
     </ng-template>
   </ng-container>
   <ng-template #tabs>
@@ -204,7 +118,6 @@
       <button type="button" class="btn btn-ghost btn-sm" (click)="closeMenu()" aria-label="Close menu">✖</button>
     </div>
     <ul class="menu w-full">
-      <!-- <li class="menu-title">{{ 'hemiw-theme.discover_stories' | translate }}</li> -->
       <li *ngFor="let btn of topButtons">
         <a routerLinkActive="active bg-primary text-primary-content" #rla="routerLinkActive"
           [routerLinkActiveOptions]="{ exact: false }" (click)="debugRoute(btn); closeMenu()"
@@ -215,7 +128,6 @@
           {{ btn.label }}
         </a>
       </li>
-      <!-- <li class="menu-title mt-2">{{ 'hemiw-theme.explore_data' | translate }}</li> -->
       <li *ngFor="let btn of middleButtons">
         <a routerLinkActive="active bg-primary text-primary-content" #rla="routerLinkActive"
           [routerLinkActiveOptions]="{ exact: false }" (click)="debugRoute(btn); closeMenu()"

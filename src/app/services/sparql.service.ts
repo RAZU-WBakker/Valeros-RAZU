@@ -21,7 +21,7 @@ export class SparqlService {
     private api: ApiService,
     private settings: SettingsService,
     private endpoints: EndpointService,
-  ) {}
+  ) { }
 
   getFederatedQuery(
     queryTemplate: string,
@@ -242,6 +242,32 @@ LIMIT 10000`;
       return objIds;
     } catch (error) {
       console.warn('Failed to fetch objects:', error);
+      return [];
+    }
+  }
+
+  async getAssociatedMediaFilesWithNames(id: string): Promise<Array<{ file: string; name?: string }>> {
+    this._ensureEndpointsExist();
+
+    const queryTemplate = `
+<${id}> schema:associatedMedia ?m .
+?m hemiw:file ?file .
+OPTIONAL { ?m schema:name ?name . }
+`;
+
+    const query = `
+PREFIX schema: <https://schema.org/>
+PREFIX hemiw: <https://huizenenmenseninwijk.nl/def/hemiw/>
+SELECT DISTINCT ?file ?name WHERE {
+    ${this.getFederatedQuery(queryTemplate)}
+}`;
+
+    try {
+      const res: Array<{ file: string; name?: string }> = await this.api.postData(this.endpoints.getFirstUrls().sparql, { query });
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.warn('Failed to fetch associated media files with names:', error);
       return [];
     }
   }
