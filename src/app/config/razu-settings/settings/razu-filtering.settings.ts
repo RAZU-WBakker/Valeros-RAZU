@@ -43,7 +43,7 @@ export const razuFilteringSettings: FilteringSettings = {
       hideValueIds: [...hideFilterOptionValueIds],
     },
     location: {
-      label: 'Locatie',
+      label: 'Straat',
       fieldIds: ['location.keyword'],
       values: [],
       hideValueIds: [...hideFilterOptionValueIds],
