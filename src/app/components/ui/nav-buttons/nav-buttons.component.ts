@@ -12,6 +12,7 @@ import {
     featherInfo,
     featherNavigation,
     featherUsers,
+    featherRadio,
     featherBookmark,
     featherImage
 } from '@ng-icons/feather-icons';
@@ -91,7 +92,8 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
             'hemiw-theme.discover_stories',
             'hemiw-theme.explore_data',
             'hemiw-theme.researched_buildings',
-            'hemiw-theme.maps_and_profiles'
+            'hemiw-theme.maps_and_profiles',
+            'hemiw-theme.news'
         ]).subscribe(translations => {
             this.topButtons = [
                 { label: 'Kaart', icon: featherMap, route: '/map' },
@@ -125,8 +127,6 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-            ];
-            this.middleButtons = [
                 {
                     label: translations['hemiw-theme.all_streets'], icon: featherNavigation, route: {
                         path: '/search',
@@ -142,6 +142,9 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
+            ];
+            this.middleButtons = [
+
                 {
                     label: translations['hemiw-theme.stories'], icon: featherBook, route: {
                         path: '/search',
@@ -172,24 +175,28 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                // {
-                //     label: translations['hemiw-theme.all_people'], icon: featherUsers, route: {
-                //         path: '/search',
-                //         queryParams: {
-                //             filters: JSON.stringify({
-                //                 type: {
-                //                     type: 2,
-                //                     fieldIds: ['type.keyword'],
-                //                     valueIds: ['https://personsincontext.org/model#PersonObservation']
-                //                 }
-                //             }),
-                //             q: ''
-                //         }
-                //     }
-                // },
+
+                {
+                    label: translations['hemiw-theme.news'], icon: featherRadio, route: {
+                        path: '/search',
+                        queryParams: {
+                            filters: JSON.stringify({
+                                type: {
+                                    type: 2,
+                                    fieldIds: ['type.keyword'],
+                                    valueIds: ['https://schema.org/NewsArticle']
+                                }
+                            }),
+                            q: ''
+                        }
+                    }
+                },
+                {
+                    label: translations['hemiw-theme.about_and_contact'], icon: featherInfo, route: '/colofon'
+                },
             ];
             this.bottomButtons = [
-                { label: translations['hemiw-theme.about_and_contact'], icon: featherInfo, route: '/colofon' },
+                // { label: translations['hemiw-theme.about_and_contact'], icon: featherInfo, route: '/colofon' },
             ];
             if (NavButtonsComponent.DEBUG) {
                 console.log('[NavButtonsComponent] top button routes:', this.topButtons.map(b => b.route));

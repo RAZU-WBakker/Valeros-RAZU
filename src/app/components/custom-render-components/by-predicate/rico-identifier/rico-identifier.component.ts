@@ -59,11 +59,9 @@ ${this.sparql.getFederatedQuery(queryTemplate, endpointUrls)}
 } LIMIT 1`;
 
     // TODO: Add type
-    const response = await this.api.postData<
+    const response = await this.api.postSparqlQuery<
       { typeLabel: string; value: string }[]
-    >(endpointUrls[0].sparql, {
-      query: query,
-    });
+    >(endpointUrls[0].sparql, query);
     if (!response || response.length === 0) {
       return;
     }

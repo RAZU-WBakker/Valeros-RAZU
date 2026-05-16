@@ -26,10 +26,18 @@ export class SparqlService {
   getFederatedQuery(
     queryTemplate: string,
     queryEndpoints?: EndpointUrlsModel[],
+    addEndpointUrlBinding = false,
   ): string {
-    const firstEndpoint = queryEndpoints
-      ? queryEndpoints[0].sparql
-      : this.endpoints.getFirstUrls().sparql;
+    const activeEndpoints = queryEndpoints ?? this.endpoints.getAllEnabledUrls();
+    if (activeEndpoints.length <= 1) {
+      const endpointUrl = activeEndpoints[0]?.sparql ?? this.endpoints.getFirstUrls().sparql;
+      if (addEndpointUrlBinding) {
+        return `${queryTemplate}\nBIND("${endpointUrl}" AS ?endpointUrl)`;
+      }
+      return queryTemplate;
+    }
+
+    const firstEndpoint = activeEndpoints[0].sparql;
     const firstServiceQuery = `
 {
   SERVICE <${firstEndpoint}> {
@@ -38,9 +46,7 @@ export class SparqlService {
   }
 }`;
 
-    const unionEndpoints = queryEndpoints
-      ? queryEndpoints.slice(1)
-      : this.endpoints.getAllEnabledUrls().slice(1);
+    const unionEndpoints = activeEndpoints.slice(1);
     const unionServiceQueries = unionEndpoints.map(
       (endpoint) => `
 UNION {
@@ -85,11 +91,9 @@ SELECT DISTINCT ?sub ?pred WHERE {
 limit 500`;
 
     try {
-      return await this.api.postData<SparqlIncomingRelationModel[]>(
+      return await this.api.postSparqlQuery<SparqlIncomingRelationModel[]>(
         this.endpoints.getFirstUrls().sparql,
-        {
-          query: query,
-        },
+        query,
       );
     } catch (error) {
       console.warn('Failed to fetch incoming relations:', error);
@@ -121,11 +125,9 @@ SELECT DISTINCT ?id ?title ?parent WHERE {
 limit 500`;
 
     try {
-      return await this.api.postData<SparqlNodeParentModel[]>(
+      return await this.api.postSparqlQuery<SparqlNodeParentModel[]>(
         this.endpoints.getFirstUrls().sparql,
-        {
-          query: query,
-        },
+        query,
       );
     } catch (error) {
       console.warn('Failed to fetch parent nodes:', error);
@@ -196,11 +198,9 @@ SELECT DISTINCT ?s ?label WHERE {
 LIMIT 10000`;
 
     try {
-      const response: { s: string; label: string }[] = await this.api.postData<
+      const response: { s: string; label: string }[] = await this.api.postSparqlQuery<
         { s: string; label: string }[]
-      >(this.endpoints.getFirstUrls().sparql, {
-        query: query,
-      });
+      >(this.endpoints.getFirstUrls().sparql, query);
       const labels: ThingWithLabelModel[] = response.map(({ s, label }) => {
         return { '@id': s, label: label };
       });
@@ -232,11 +232,9 @@ SELECT DISTINCT ?o WHERE {
 }
 LIMIT 10000`;
     try {
-      const response: { o: string }[] = await this.api.postData<
+      const response: { o: string }[] = await this.api.postSparqlQuery<
         { o: string }[]
-      >(this.endpoints.getFirstUrls().sparql, {
-        query: query,
-      });
+      >(this.endpoints.getFirstUrls().sparql, query);
       const objIds = response.map((item) => item.o);
 
       return objIds;
@@ -263,7 +261,9 @@ SELECT DISTINCT ?file ?name WHERE {
 }`;
 
     try {
-      const res: Array<{ file: string; name?: string }> = await this.api.postData(this.endpoints.getFirstUrls().sparql, { query });
+      const res: Array<{ file: string; name?: string }> = await this.api.postSparqlQuery<
+        Array<{ file: string; name?: string }>
+      >(this.endpoints.getFirstUrls().sparql, query);
       console.log(res);
       return res;
     } catch (error) {
@@ -278,14 +278,12 @@ SELECT DISTINCT ?file ?name WHERE {
     const queryTemplate = `${wrapWithAngleBrackets(id)} ?pred ?obj .`;
 
     const query = `SELECT DISTINCT ?pred ?obj ?endpointUrl WHERE {
-        ${this.getFederatedQuery(queryTemplate)}
+        ${this.getFederatedQuery(queryTemplate, undefined, true)}
     }`;
 
-    const results = await this.api.postData<SparqlPredObjModel[]>(
+    const results = await this.api.postSparqlQuery<SparqlPredObjModel[]>(
       this.endpoints.getFirstUrls().sparql,
-      {
-        query: query,
-      },
+      query,
     );
     const nodeData: { [pred: string]: NodeObj[] } = {};
     const endpointIds: Set<string> = new Set();
@@ -329,11 +327,9 @@ SELECT DISTINCT ?file ?name WHERE {
         ${this.getFederatedQuery(copyrightQueryTemplate)}
     }`;
 
-    const results: { copyrightNotice: string }[] = await this.api.postData<
+    const results: { copyrightNotice: string }[] = await this.api.postSparqlQuery<
       { copyrightNotice: string }[]
-    >(this.endpoints.getFirstUrls().sparql, {
-      query: query,
-    });
+    >(this.endpoints.getFirstUrls().sparql, query);
     if (!results || results.length === 0) {
       return null;
     }
@@ -389,11 +385,9 @@ SELECT DISTINCT ?fileURI ?format ?name ?url ?iiifService ?width ?height ?positio
 } ORDER BY ?position`;
 
     try {
-      const iiifItems: IIIFItem[] = await this.api.postData<IIIFItem[]>(
+      const iiifItems: IIIFItem[] = await this.api.postSparqlQuery<IIIFItem[]>(
         this.endpoints.getFirstUrls().sparql,
-        {
-          query: query,
-        },
+        query,
       );
 
       return iiifItems.map((item) => {
@@ -423,11 +417,9 @@ select ?altoUrl where {
      ${this.getFederatedQuery(sparqlTemplate)}
 } limit 100`;
 
-    const results: { altoUrl: string }[] = await this.api.postData<
+    const results: { altoUrl: string }[] = await this.api.postSparqlQuery<
       { altoUrl: string }[]
-    >(this.endpoints.getFirstUrls().sparql, {
-      query: query,
-    });
+    >(this.endpoints.getFirstUrls().sparql, query);
     if (!results || results.length === 0) {
       return null;
     }

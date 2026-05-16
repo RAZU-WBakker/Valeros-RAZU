@@ -61,9 +61,10 @@
       Bijlagen
     </label>
     <div class="tab-content bg-base-100 border-base-300 p-6 docviewer">@for (m of associatedMedia; track $index) {
-      <a class="btn btn-primary mt-2 mr-2" [href]="m.url" target="_blank" rel="noopener">
-        Download bijlage '{{ m.name || ($index + 1) }}'
-      </a>
+      <div><a class="btn btn-primary mt-2 mr-2" [href]="m.url" target="_blank" rel="noopener">
+          Download bijlage '{{ m.name || ($index + 1) }}'
+        </a>
+      </div>
       }
     </div>
     }

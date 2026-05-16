@@ -1,8 +1,5 @@
-<span [innerHTML]="renderedLabelHtml" class="w-full"></span>
-<button
-  [ngClass]="allowLabelExpand ? 'text-primary clickable' : ''"
-  (click)="onEllipsisClick($event)"
-  *ngIf="shouldTruncate && showingTruncatedLabel && labelIsTruncated"
->
+<div [innerHTML]="renderedLabelHtml" class="w-full rich-text"></div>
+<button [ngClass]="allowLabelExpand ? 'text-primary clickable' : ''" (click)="onEllipsisClick($event)"
+  *ngIf="shouldTruncate && showingTruncatedLabel && labelIsTruncated">
   &nbsp;[...]
 </button>

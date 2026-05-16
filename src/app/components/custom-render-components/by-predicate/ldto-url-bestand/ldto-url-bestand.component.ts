@@ -58,11 +58,9 @@ ${wrapWithAngleBrackets(this.data.nodeId)} <https://data.razu.nl/def/ldto/bestan
       ${this.sparql.getFederatedQuery(queryTemplate, razuUrls)}
     } LIMIT 100`;
 
-    const response = await this.api.postData<{ bestandsformaat: string }[]>(
+    const response = await this.api.postSparqlQuery<{ bestandsformaat: string }[]>(
       razuUrls[0].sparql,
-      {
-        query: query,
-      },
+      query,
     );
     if (!response) {
       return;

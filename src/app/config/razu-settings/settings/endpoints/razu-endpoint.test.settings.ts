@@ -9,7 +9,8 @@ export const razuEndpointSettings: EndpointSettings = {
       endpointUrls: [
         {
           elastic: 'https://ontwikkel.search.razu.nl/amerongsche-courant/_search',
-          sparql: 'https://api.data.razu.nl/datasets/id/object/sparql',
+          sparql: 'http://min:8890/sparql/',
+          // sparql: 'https://api.data.razu.nl/datasets/id/object/sparql',
         },
       ],
     },

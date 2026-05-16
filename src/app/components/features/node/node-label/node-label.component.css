@@ -1,4 +1,4 @@
-span {
+.rich-text {
   /* Prefer hyphenation; requires correct lang on document or element (index.html has lang="nl-NL"). */
   hyphens: auto;
   -webkit-hyphens: auto;
@@ -7,4 +7,15 @@ span {
   /* Keep normal word-breaking; allow wrapping long tokens if needed */
   word-break: normal;
   overflow-wrap: anywhere;
+}
+
+/* Ensure styles penetrate into [innerHTML] content */
+:host ::ng-deep .rich-text p {
+  margin: 12px 0;
+  padding: 2px 0;
+}
+
+:host ::ng-deep .rich-text a {
+  color: var(--primary-color);
+  text-decoration: underline;
 }

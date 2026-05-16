@@ -23,6 +23,7 @@ export const razuLabelPredicates: string[] = [
   'name', // temp fix, elastic index should be changed
   'https://w3id.org/italia/onto/CLV/officialStreetName',
   'https://w3id.org/italia/onto/CLV/fullAddress',
+  'https://schema.org/headline',
 ];
 
 export const razuParentPredicates: string[] = [
