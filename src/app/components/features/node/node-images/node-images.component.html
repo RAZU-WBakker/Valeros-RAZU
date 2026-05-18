@@ -7,7 +7,7 @@
   @if (!useViewer) {
     <div class="w-full h-full overflow-y-scroll">
       <img
-        [src]="imageUrls[0]"
+        [src]="thumbnailUrls[0]"
         [alt]="imageLabel ?? 'Unknown image'"
         class="w-full h-full object-cover"
         (error)="onImageLoadError($event)"
