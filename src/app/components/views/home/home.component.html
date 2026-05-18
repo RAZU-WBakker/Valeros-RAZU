@@ -1,15 +1,28 @@
 <app-view-container>
-  <app-lang-switch class="absolute top-1 right-4" />
+  <!-- Map component positioned absolutely to cover the entire viewport -->
+  <!-- <div class="map-container">
+    <app-map></app-map>
+  </div> -->
 
-  <app-header />
 
-  <app-home-intro />
+  <!-- Content positioned above the map -->
+  <div class="content-container">
+    <app-lang-switch class="absolute top-1 right-4 interactive" />
 
-  <div class="flex-grow-0 p-4 pb-2">
-    <div class="flex flex-row items-center">
-      <app-search-input class="flex-grow w-full" />
-    </div>
+    <app-header class="interactive" />
+
+    <!-- <div class="flex-grow-0 p-4 pb-2 interactive">
+      <div class="flex flex-row items-center justify-center">
+        <app-search-input class="max-w-md w-full" />
+      </div>
+    </div> -->
+
+    <app-nav-buttons class="interactive" layout="center-grid"></app-nav-buttons>
+
+    <!--<app-home-intro />-->
+
+    <img src="{{backgroundImageUrl}}" class="full-screen-image" />
+
+    <!--<app-home-intro-below-search />-->
   </div>
-
-  <app-home-intro-below-search />
 </app-view-container>

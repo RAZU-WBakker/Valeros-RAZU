@@ -1,6 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, type OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { DetailsService } from '../../../services/details.service';
 import { NodeService } from '../../../services/node/node.service';
 import { SearchService } from '../../../services/search/search.service';
@@ -11,26 +11,26 @@ import { SearchInputComponent } from '../../features/search/search-input/search-
 import { HeaderComponent } from '../../ui/header/header.component';
 import { LangSwitchComponent } from '../../ui/lang-switch/lang-switch.component';
 import { ViewContainerComponent } from '../view-container/view-container.component';
-import { HomeIntroBelowSearchComponent } from './home-intro/home-intro-below-search/home-intro-below-search.component';
-import { HomeIntroComponent } from './home-intro/home-intro.component';
+import { NavButtonsComponent } from "../../ui/nav-buttons/nav-buttons.component";
 
 @Component({
   selector: 'app-home',
   imports: [
-    HomeIntroComponent,
     LangSwitchComponent,
     HeaderComponent,
     SearchInputComponent,
     HeaderComponent,
     ViewContainerComponent,
-    HomeIntroComponent,
-    HomeIntroBelowSearchComponent,
+    CommonModule,
     LangSwitchComponent,
+    NavButtonsComponent,
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  backgroundArray = ['assets/img/backgrounds/001.jpg', 'assets/img/backgrounds/002.jpg', 'assets/img/backgrounds/003.jpg', 'assets/img/backgrounds/004.jpg'];
+  backgroundImageUrl = "";
   constructor(
     public search: SearchService,
     public viewModes: ViewModeService,
@@ -39,10 +39,11 @@ export class HomeComponent implements OnInit {
     public scroll: ScrollService,
     public details: DetailsService,
     public settings: SettingsService,
-    public translate: TranslateService,
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.backgroundImageUrl = this.backgroundArray[Math.floor(Math.random() * this.backgroundArray.length)];
+  }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 }

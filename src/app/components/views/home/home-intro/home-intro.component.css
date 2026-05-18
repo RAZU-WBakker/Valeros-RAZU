@@ -1,4 +1,5 @@
+@reference '../../../../theme.css';
+
 p {
-  font-size: 1.125rem;
-  margin-bottom: 0.5rem;
+  @apply text-lg mb-2;
 }
