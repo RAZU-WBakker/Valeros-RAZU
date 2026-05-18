@@ -7,22 +7,22 @@ export const razuSortingSettings: SortingSettings = {
   options: {
     ...sortingSettings.options,
     'title-a-z': {
-      fields: ['naam.keyword'],
+      fields: ['name.keyword'],
       label: 'Titel (A-Z)',
       order: SortOrder.Ascending,
     },
     'title-z-a': {
-      fields: ['naam.keyword'],
+      fields: ['name.keyword'],
       label: 'Titel (Z-A)',
       order: SortOrder.Descending,
     },
     'date-asc': {
-      fields: ['document_day'],
+      fields: ['startDate.keyword'],
       label: 'Datum (oudste eerst)',
       order: SortOrder.Ascending,
     },
     'date-desc': {
-      fields: ['document_day'],
+      fields: ['startDate.keyword'],
       label: 'Datum (nieuwste eerst)',
       order: SortOrder.Descending,
     },

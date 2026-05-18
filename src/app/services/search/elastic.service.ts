@@ -125,51 +125,74 @@ export class ElasticService {
     filterOptions: FilterOptionModel[],
     activeFilters: FilterModel[],
   ): Promise<estypes.SearchResponse<any>[]> {
-    const fieldIds: string[] = filterOptions.flatMap(
-      (filterOption) => filterOption.fieldIds,
-    );
-    const aggs = fieldIds.reduce((result: any, fieldId: string) => {
-      const elasticFieldId = this.data.replacePeriodsWithSpaces(fieldId);
+    const aggs: any = {};
 
-      let order = undefined;
+    for (const filterOption of filterOptions) {
+      for (const fieldId of filterOption.fieldIds) {
+        const elasticFieldId = this.data.replacePeriodsWithSpaces(fieldId);
 
-      // TODO: Support multiple filter options for the same field, sorted differently
-      const filterOption = filterOptions.find((option) =>
-        option.fieldIds.includes(fieldId),
-      );
+        // Check if this filter option uses nested aggregation
+        if ((filterOption as any).nestedPath) {
+          const nestedPath = (filterOption as any).nestedPath;
+          const nestedFilter = (filterOption as any).nestedFilter;
+          const nestedField = (filterOption as any).nestedField;
 
-      if (filterOption?.sort) {
-        order = {
-          [filterOption.sort.type]: filterOption.sort.order,
-        };
-      }
-
-      result[elasticFieldId] = {
-        terms: {
-          field: elasticFieldId,
-          min_doc_count:
-            Settings.filtering.minNumOfValuesForFilterOptionToAppear,
-          size: Settings.search.elasticFilterTopHitsMax,
-          order: order,
-        },
-      };
-
-      const clusteringIsEnabled =
-        Object.keys(Settings.clustering.filterOptionValues).length > 0;
-      if (clusteringIsEnabled) {
-        // Retrieve hit IDs for each filter option value (e.g. "public domain" for the "license" filter option). We need these so we can check if we need to cluster values.
-        // Note that this is quite a big performance hit, especially when working with many filter options/values.
-        result[elasticFieldId].aggs = {
-          field_hits: {
-            top_hits: {
-              size: Settings.search.elasticFilterTopHitsMax,
-              _source: '',
+          aggs[elasticFieldId] = {
+            nested: {
+              path: nestedPath,
             },
-          },
-        };
+            aggs: {
+              filtered: {
+                filter: nestedFilter,
+                aggs: {
+                  values: {
+                    terms: {
+                      field: nestedField,
+                      min_doc_count:
+                        Settings.filtering.minNumOfValuesForFilterOptionToAppear,
+                      size: Settings.search.elasticFilterTopHitsMax,
+                    },
+                  },
+                },
+              },
+            },
+          };
+        } else {
+          let order = undefined;
+
+          if (filterOption?.sort) {
+            order = {
+              [filterOption.sort.type]: filterOption.sort.order,
+            };
+          }
+
+          aggs[elasticFieldId] = {
+            terms: {
+              field: elasticFieldId,
+              min_doc_count:
+                Settings.filtering.minNumOfValuesForFilterOptionToAppear,
+              size: Settings.search.elasticFilterTopHitsMax,
+              order: order,
+            },
+          };
+
+          const clusteringIsEnabled =
+            Object.keys(Settings.clustering.filterOptionValues).length > 0;
+          if (clusteringIsEnabled) {
+            // Retrieve hit IDs for each filter option value (e.g. "public domain" for the "license" filter option). We need these so we can check if we need to cluster values.
+            // Note that this is quite a big performance hit, especially when working with many filter options/values.
+            aggs[elasticFieldId].aggs = {
+              field_hits: {
+                top_hits: {
+                  size: Settings.search.elasticFilterTopHitsMax,
+                  _source: '',
+                },
+              },
+            };
+          }
+        }
       }
-      return result;
-    }, {});
+    }
 
     const queryData = this.getNodeSearchQuery(
       query,
@@ -181,7 +204,13 @@ export class ElasticService {
     queryData.size = 0;
     queryData['_source'] = '';
 
-    return await this.searchEndpoints(queryData);
+    console.log('[ElasticService] Filter options query:', JSON.stringify(queryData, null, 2));
+
+    const results = await this.searchEndpoints(queryData);
+
+    console.log('[ElasticService] Filter options results:', JSON.stringify(results, null, 2));
+
+    return results;
   }
 
   getFieldAndValueFilterQueries(
@@ -199,34 +228,69 @@ export class ElasticService {
       if (!filter.fieldId || !filter.valueId) {
         return;
       }
-      const fieldIdWithSpaces = this.data.replacePeriodsWithSpaces(
-        filter.fieldId,
-      );
-      const fieldIdWithDots = filter.fieldId;
 
-      const matchQueryWithSpaces: ElasticMatchQueries = {
-        match_phrase: {
-          [fieldIdWithSpaces]: { query: filter.valueId, boost: boost },
-        },
-      };
-
-      const matchQueryWithDots: ElasticMatchQueries = {
-        match_phrase: {
-          [fieldIdWithDots]: { query: filter.valueId, boost: boost },
-        },
-      };
-
-      const shouldQuery: ElasticShouldQueries = {
-        bool: {
-          should: [matchQueryWithSpaces, matchQueryWithDots],
-        },
-      };
-
-      const filterId = filter?.filterId ?? 'Filter';
-      if (!(filterId in matchQueries)) {
-        matchQueries[filterId] = [];
+      // Check if this filter uses nested query
+      const filterId = filter?.filterId;
+      if (!filterId) {
+        return;
       }
-      matchQueries[filterId].push(shouldQuery);
+      const filterOption = this.getFilterOptionById(filterId);
+      if (filterOption?.nestedPath && filterOption.nestedFilter && filterOption.nestedField) {
+        const nestedQuery: any = {
+          nested: {
+            path: filterOption.nestedPath,
+            query: {
+              bool: {
+                must: [
+                  {
+                    term: {
+                      [Object.keys(filterOption.nestedFilter.term)[0]]: Object.values(filterOption.nestedFilter.term)[0]
+                    }
+                  },
+                  {
+                    term: {
+                      [filterOption.nestedField]: filter.valueId
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        };
+
+        if (!(filterId in matchQueries)) {
+          matchQueries[filterId] = [];
+        }
+        matchQueries[filterId].push(nestedQuery);
+      } else {
+        const fieldIdWithSpaces = this.data.replacePeriodsWithSpaces(
+          filter.fieldId,
+        );
+        const fieldIdWithDots = filter.fieldId;
+
+        const matchQueryWithSpaces: ElasticMatchQueries = {
+          match_phrase: {
+            [fieldIdWithSpaces]: { query: filter.valueId, boost: boost },
+          },
+        };
+
+        const matchQueryWithDots: ElasticMatchQueries = {
+          match_phrase: {
+            [fieldIdWithDots]: { query: filter.valueId, boost: boost },
+          },
+        };
+
+        const shouldQuery: ElasticShouldQueries = {
+          bool: {
+            should: [matchQueryWithSpaces, matchQueryWithDots],
+          },
+        };
+
+        if (!(filterId in matchQueries)) {
+          matchQueries[filterId] = [];
+        }
+        matchQueries[filterId].push(shouldQuery);
+      }
     });
 
     const shouldMatchQueries: ElasticShouldQueries[] = Object.values(
@@ -235,6 +299,10 @@ export class ElasticService {
       return { bool: { should: queries } };
     });
     return shouldMatchQueries;
+  }
+
+  private getFilterOptionById(filterId: string): FilterOptionModel | undefined {
+    return Settings.filtering.filterOptions[filterId];
   }
 
   async searchEndpoints<T>(
@@ -248,6 +316,8 @@ export class ElasticService {
       if (!endpoint.elastic) {
         continue;
       }
+
+      console.log('[ElasticService] Sending query to endpoint', endpoint.id, ':', JSON.stringify(queryData, null, 2));
 
       const searchPromise: Promise<estypes.SearchResponse<T>> =
         this.api.postData<estypes.SearchResponse<T>>(
@@ -266,11 +336,22 @@ export class ElasticService {
     const searchResults: estypes.SearchResponse<T>[] =
       await Promise.all(searchPromises);
 
+    console.log('[ElasticService] Raw results from Elasticsearch:', JSON.stringify(searchResults, null, 2));
+
     const searchResultsWithEndpointIds: ElasticEndpointSearchResponse<T>[] =
-      searchResults.map((searchResult, index) => ({
-        ...searchResult,
-        endpointId: searchPromisesAndEndpoints[index].endpointId,
-      }));
+      searchResults.map((searchResult, index) => {
+        const resultWithEndpoint = {
+          ...searchResult,
+          endpointId: searchPromisesAndEndpoints[index].endpointId,
+        };
+
+        // Log first hit structure to understand the data format
+        if (searchResult.hits?.hits?.length > 0) {
+          console.log('[ElasticService] First hit structure:', JSON.stringify(searchResult.hits.hits[0], null, 2));
+        }
+
+        return resultWithEndpoint;
+      });
     return searchResultsWithEndpointIds;
   }
 

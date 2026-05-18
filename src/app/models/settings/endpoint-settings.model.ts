@@ -8,5 +8,6 @@ export interface EndpointSettings {
     url: string;
     matchSubstring: string;
   };
+  proxyUrl?: string;
   snippetServer?: string;
 }

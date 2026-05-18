@@ -35,6 +35,9 @@ export interface FilterOptionModel {
     component?: Type<CustomFilterComponent>;
     service?: Type<CustomFilterService>;
   };
+  nestedPath?: string;
+  nestedFilter?: any;
+  nestedField?: string;
 }
 
 export interface FilterOptionValueModel {

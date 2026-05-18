@@ -7,34 +7,35 @@ import {
 } from '../../default-settings/settings/predicate.settings';
 
 export const razuTypePredicates: string[] = [
-  ...typePredicates,
-  'https://data.razu.nl/def/ldto/classificatie',
+  'type',
 ];
 
 export const razuLabelPredicates: string[] = [
-  ...labelPredicates,
+  'name',
+  'description',
   'naam',
   'https://data.razu.nl/def/ldto/naam',
   'https://data.razu.nl/def/ldto/begripLabel',
   'https://data.razu.nl/def/ldto/verwijzingNaam',
   'https://data.razu.nl/def/ldto/identificatieKenmerk',
-  'http://www.w3.org/2004/02/skos/core#prefLabel',
+  'http://schema.org/copyrightNotice',
+  'https://schema.org/name',
+  'https://w3id.org/italia/onto/CLV/officialStreetName',
+  'https://w3id.org/italia/onto/CLV/fullAddress',
+  'https://schema.org/headline',
+  'http://www.w3.org/2000/01/rdf-schema#label',
 ];
 
 export const razuParentPredicates: string[] = [
-  ...parentPredicates,
-  'https://data.razu.nl/def/ldto/isOnderdeelVan',
-  'https://www.ica.org/standards/RiC/ontology#isOrWasIncludedIn',
-  'https://schema.org/hadPrimarySource',
+  // Disabled for custom index - no hierarchical structure
 ];
 
-export const razuFilePredicates: string[] = [...filePredicates, 'bestand_url'];
+export const razuFilePredicates: string[] = [
+  'url_bestand',
+];
 
 export const razuHopFilePredicates: string[][] = [
-  [
-    'https://data.razu.nl/def/ldto/heeftRepresentatie',
-    'https://data.razu.nl/def/ldto/URLBestand',
-  ],
+  // Disabled for custom index
 ];
 
 export const razuPredicateSettings: PredicateSettings = {

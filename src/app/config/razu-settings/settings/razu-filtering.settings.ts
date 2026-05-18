@@ -26,56 +26,29 @@ const hideFilterOptionValueIds: string[] = [
 export const razuFilteringSettings: FilteringSettings = {
   ...filteringSettings,
   filterOptions: {
-    title: {
-      label: 'Titel',
-      fieldIds: ['serie.keyword'],
+    type: {
+      label: 'Type',
+      fieldIds: ['type.keyword'],
       values: [],
       hideValueIds: [...hideFilterOptionValueIds],
     },
-    // archiefVormer: {
-    //   label: 'Archiefvormer',
-    //   fieldIds: ['archiefvormer.uri'],
-    //   values: [],
-    //   hideValueIds: [...hideFilterOptionValueIds],
-    // },
-    archief: {
-      label: 'Archief',
-      fieldIds: ['archief'],
+    location: {
+      label: 'Straat',
+      fieldIds: ['location.keyword'],
+      values: [],
+      hideValueIds: [],
+    },
+    date: {
+      label: 'Datering',
+      fieldIds: ['startDate.keyword'],
       values: [],
       hideValueIds: [...hideFilterOptionValueIds],
     },
-    // aggregatieniveau: {
-    //   label: 'Aggregatieniveau',
-    //   fieldIds: ['aggregatieniveau.uri'],
-    //   values: [],
-    //   hideValueIds: [...hideFilterOptionValueIds],
-    // },
-    classificatie: {
-      label: 'Classificatie',
-      fieldIds: ['classificatie.uri'],
+    researched: {
+      label: 'Onderzocht',
+      fieldIds: ['researched.keyword'],
       values: [],
       hideValueIds: [...hideFilterOptionValueIds],
-    },
-    auteursrecht: {
-      label: 'Auteursrecht',
-      fieldIds: ['auteursrecht.uri'],
-      values: [],
-      hideValueIds: [...hideFilterOptionValueIds],
-    },
-    // openbaarheid: {
-    //   label: 'Openbaarheid',
-    //   fieldIds: ['openbaarheid.uri'],
-    //   values: [],
-    //   hideValueIds: [...hideFilterOptionValueIds],
-    // },
-    documentDate: {
-      label: 'Datum',
-      fieldIds: ['document_day'],
-      values: [],
-      customFilter: {
-        component: DateRangeFilterComponent,
-        service: DateRangeFilterService,
-      },
-    },
+    }
   },
 };

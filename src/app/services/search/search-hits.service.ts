@@ -62,9 +62,45 @@ export class SearchHitsService {
           return;
         }
 
-        // Add endpointId to the source
-        (hit._source as ElasticNodeModel)['endpointId'] =
-          searchResponse.endpointId;
+        // Transform custom index structure to expected node format
+        const source = hit._source as any;
+
+        // Map 'id' to '@id' if '@id' doesn't exist
+        if (!source['@id'] && source['id']) {
+          source['@id'] = source['id'];
+        }
+
+        // Transform flat structure to predicate-based structure
+        // The custom index has flat fields, convert them to predicate format
+        const transformedSource: any = {
+          '@id': source['@id'],
+          endpointId: searchResponse.endpointId,
+        };
+
+        // Add predicates array first (so it takes precedence over flat fields)
+        if (Array.isArray(source.predicates)) {
+          for (const predObj of source.predicates) {
+            if (predObj.predicate && predObj.value !== undefined) {
+              const predKey = predObj.predicate;
+              if (!transformedSource[predKey]) {
+                transformedSource[predKey] = [];
+              }
+              transformedSource[predKey].push(predObj.value);
+            }
+          }
+        }
+
+        // Add flat fields as predicates (only if not already set by predicates array)
+        const flatFields = ['name', 'description', 'type', 'location', 'participants', 'source', 'startDate', 'birthDate', 'deathDate', 'researched', 'url_bestand', 'graph'];
+        for (const field of flatFields) {
+          if (source[field] !== undefined && source[field] !== null && !transformedSource[field]) {
+            transformedSource[field] = source[field];
+          }
+        }
+
+        hit._source = transformedSource as ElasticNodeModel;
+
+        console.log('[SearchHitsService] Transformed node:', JSON.stringify(transformedSource, null, 2));
 
         const id = hit._source['@id'];
         if (!id) {

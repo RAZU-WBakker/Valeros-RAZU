@@ -65,10 +65,21 @@ export class FilterService {
       for (const [elasticFieldId, aggregationsAggregate] of Object.entries(
         aggregations,
       )) {
-        const aggregationsData =
-          aggregationsAggregate as ElasticAggregationModel;
-        for (const docCount of aggregationsData.buckets) {
-          const hitIds = docCount?.field_hits?.hits?.hits?.map((h) => h?._id);
+        const aggregationsData = aggregationsAggregate as any;
+
+        // Handle nested aggregation structure
+        let buckets = aggregationsData.buckets;
+        if (!buckets && aggregationsData.filtered?.values?.buckets) {
+          buckets = aggregationsData.filtered.values.buckets;
+        }
+
+        if (!buckets) {
+          console.warn(`No buckets found for field ${elasticFieldId}`, aggregationsData);
+          continue;
+        }
+
+        for (const docCount of buckets) {
+          const hitIds = docCount?.field_hits?.hits?.hits?.map((h: any) => h?._id);
           docCount.hitIds = hitIds ?? [];
 
           if (!(elasticFieldId in docCountsByFieldId)) {

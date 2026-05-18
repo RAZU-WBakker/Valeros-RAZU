@@ -17,18 +17,19 @@ export const razuNodeVisibilitySettings: NodeVisibilitySettings = {
     // },
   },
   alwaysHide: {
-    hideSkosConcept: {
-      fieldIds: [...typePredicates],
-      valueIds: ['http://www.w3.org/2004/02/skos/core#concept'],
-      type: FilterType.FieldAndValue,
-    },
-    hideTerms: {
-      fieldIds: [...parentPredicates],
-      valueIds: [
-        // 'https://hetutrechtsarchief.nl/id/trefwoorden',
-        'https://termennetwerk.netwerkdigitaalerfgoed.nl',
-      ],
-      type: FilterType.FieldAndValue,
-    },
+    // Disabled RDF-specific filters for custom index
+    // hideSkosConcept: {
+    //   fieldIds: [...typePredicates],
+    //   valueIds: ['http://www.w3.org/2004/02/skos/core#concept'],
+    //   type: FilterType.FieldAndValue,
+    // },
+    // hideTerms: {
+    //   fieldIds: [...parentPredicates],
+    //   valueIds: [
+    //     // 'https://hetutrechtsarchief.nl/id/trefwoorden',
+    //     'https://termennetwerk.netwerkdigitaalerfgoed.nl',
+    //   ],
+    //   type: FilterType.FieldAndValue,
+    // },
   },
 };
