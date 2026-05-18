@@ -180,6 +180,7 @@ export class FilterService {
     if (urlFilters.base) {
       baseFilters = this.data.convertFiltersFromIdsFormat(urlFilters.base);
     }
+    this.prevEnabled = baseFilters.map((filter) => ({ ...filter }));
     this.enabled.next(baseFilters);
 
     // Custom filters

@@ -38,10 +38,10 @@
 
 /* Production theme */
 .theme-production {
-  --color-primary: #6c5a82;
-  --color-neutral: #a999bd;
-  --color-accent: #9ad199;
-  --color-secondary: #c2b280;
+  --color-primary: #0082c2;
+  --color-neutral: #0082c2;
+  --color-accent: #b3b3b3;
+  --color-secondary: #6d6d6d;
   --color-background: #E5E4E2;
   --color-search-background: #E5E4E2;
   --rounded-box: 0.375rem;

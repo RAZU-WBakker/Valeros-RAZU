@@ -164,19 +164,39 @@ export class SearchService {
         take(1),
       )
       .subscribe((queryParams) => {
-        const filtersParam: string | undefined =
-          queryParams[Settings.url.params.filters];
-        if (filtersParam) {
-          this.filters.onUpdateFromURLParam(filtersParam);
+        if (this.url.ignoreQueryParamChange) {
+          console.log('Ignoring query param change');
+          return;
         }
 
-        setTimeout(() => this._searchOnUrlChange(queryParams));
+        const filtersParam: string | undefined =
+          queryParams[Settings.url.params.filters];
+        const queryStr = queryParams[Settings.url.params.search];
+        if (filtersParam) {
+          this.queryStr = queryStr;
+          this.filters.onUpdateFromURLParam(filtersParam);
+          return;
+        }
+
+        this._searchOnUrlChange(queryParams);
       });
 
     this.route.queryParams.pipe(skip(1)).subscribe((queryParams: Params) => {
-      setTimeout(() => {
-        this._searchOnUrlChange(queryParams);
-      });
+      if (this.url.ignoreQueryParamChange) {
+        console.log('Ignoring query param change');
+        return;
+      }
+
+      const filtersParam: string | undefined =
+        queryParams[Settings.url.params.filters];
+      const queryStr = queryParams[Settings.url.params.search];
+      if (filtersParam) {
+        this.queryStr = queryStr;
+        this.filters.onUpdateFromURLParam(filtersParam);
+        return;
+      }
+
+      this._searchOnUrlChange(queryParams);
     });
   }
 

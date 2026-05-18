@@ -100,8 +100,6 @@ export class SearchHitsService {
 
         hit._source = transformedSource as ElasticNodeModel;
 
-        console.log('[SearchHitsService] Transformed node:', JSON.stringify(transformedSource, null, 2));
-
         const id = hit._source['@id'];
         if (!id) {
           return;

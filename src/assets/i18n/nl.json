@@ -116,5 +116,18 @@
   "view-mode": {
     "list-view": "Lijstweergave",
     "grid-view": "Rasterweergave"
+  },
+  "hemiw-theme": {
+    "news": "Nieuws",
+    "map": "Kaart",
+    "stories": "Verhalen",
+    "all_buildings": "Alle panden",
+    "all_streets": "Alle straten",
+    "all_people": "Alle mensen",
+    "about_and_contact": "Contact & Project",
+    "discover_stories": "Ontdek de verhalen",
+    "explore_data": "Verken de data",
+    "researched_buildings": "Onderzochte panden",
+    "maps_and_profiles": "Gevelwanden"
   }
 }

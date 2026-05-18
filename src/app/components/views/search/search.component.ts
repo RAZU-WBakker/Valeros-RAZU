@@ -31,6 +31,7 @@ import { LangSwitchComponent } from '../../ui/lang-switch/lang-switch.component'
 import { DetailsComponent } from '../details/details.component';
 import { ViewContainerComponent } from '../view-container/view-container.component';
 import { NodesGridComponent } from './nodes-grid/nodes-grid.component';
+import { NavButtonsComponent } from '../../ui/nav-buttons/nav-buttons.component';
 
 @Component({
   selector: 'app-search',
@@ -48,6 +49,7 @@ import { NodesGridComponent } from './nodes-grid/nodes-grid.component';
     SearchButtonsToolbarComponent,
     TranslatePipe,
     SkipLinksComponent,
+    NavButtonsComponent,
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css',

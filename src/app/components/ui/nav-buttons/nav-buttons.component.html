@@ -1,0 +1,170 @@
+<div [ngClass]="layout === 'center-grid' ? 'center-grid-nav' : 'bottom-tabs'">
+  <ng-container *ngIf="layout === 'center-grid'; else tabs">
+    <!-- Mobile stacked version -->
+    <div class="hidden min-[1100px]:block" *ngIf="isMobile(); else desktopGrid">
+    </div>
+    <ng-template #desktopGrid>
+      <div class="navbar bg-base-100 shadow-sm fixed bottom-[calc(100vh/3)] h-32 overflow-visible">
+        <div class="navbar-start">
+        </div>
+        <div class="navbar-center hidden lg:flex">
+          <ul class="menu menu-horizontal px-1">
+            @for(btn of topButtons; track $index) {
+              <li>
+                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0 h-32"
+                  routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
+                  [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
+                  [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
+                  [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+                  [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null"
+                  queryParamsHandling="merge">
+                  <ng-icon [svg]="btn.icon" class="text-sm pb-2" aria-hidden="true"></ng-icon>
+                  <span class="text-[0.9rem]  leading-none hidden sm:block">{{ btn.label }}</span>
+                </a>
+              </li>
+            }
+            @if (settings.showLogo) {
+            <img [src]="settings.logoPath" alt="Logo" [class.mr-3]="settings.showTitle"
+              class="h-80 overflow-visible -my-25" />
+            }
+            @for(btn of middleButtons; track $index) {
+              <li>
+                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0 h-32"
+                  routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
+                  [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
+                  [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
+                  [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+                  [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null"
+                  queryParamsHandling="merge">
+                  <ng-icon [svg]="btn.icon" class="text-sm pb-2" aria-hidden="true"></ng-icon>
+                  <span class="text-[0.9rem]  leading-none hidden sm:block">{{ btn.label }}</span>
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+        <div class="navbar-end">
+          <ul class="menu menu-horizontal px-1">
+            @for(btn of bottomButtons; track $index) {
+              <li>
+                <a class="tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0 h-32"
+                  routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
+                  [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
+                  [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
+                  [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+                  [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null"
+                  queryParamsHandling="merge">
+                  <ng-icon [svg]="btn.icon" class="text-sm pb-2" aria-hidden="true"></ng-icon>
+                  <span class="text-[0.9rem]  leading-none hidden sm:block">{{ btn.label }}</span>
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-template #tabs>
+    <!-- DaisyUI Dock replacing custom bottom tabs/menu -->
+    <div
+      class="hidden min-[1100px]:flex dock dock-bottom dock-xl fixed bottom-0 left-0 right-0 w-full z-50 bg-base-100/90 backdrop-blur shadow-lg items-stretch"
+      role="toolbar" aria-label="Navigation">
+      <!-- Top buttons -->
+      @for(btn of topButtons; track $index) {
+        <a class="dock-item dock-active tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
+          routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
+          [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
+          [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
+          [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+          [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null"
+          queryParamsHandling="merge">
+          <ng-icon [svg]="btn.icon" class="text-xl" aria-hidden="true"></ng-icon>
+          <span class="text-[0.9rem] leading-none hidden sm:block">{{ btn.label }}</span>
+        </a>
+    }
+      <!-- Middle buttons -->
+      @for(btn of middleButtons; track $index) {
+        <a class="dock-item dock-active tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
+          routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
+          [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
+          [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
+          [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+          [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null"
+          queryParamsHandling="merge">
+          <ng-icon [svg]="btn.icon" class="text-xl" aria-hidden="true"></ng-icon>
+          <span class="text-[0.9rem] leading-none">{{ btn.label }}</span>
+        </a>
+    }
+      <!-- Bottom buttons -->
+      @for(btn of bottomButtons; track $index) {
+        <a class="dock-item dock-active tooltip tooltip-top btn btn-ghost btn-lg flex flex-col gap-0"
+          routerLinkActive="btn-active bg-primary text-primary-content" #rla="routerLinkActive"
+          [routerLinkActiveOptions]="{ exact: false }" [attr.data-tip]="btn.label" [attr.aria-label]="btn.label"
+          [attr.aria-current]="rla.isActive ? 'page' : null" (click)="debugRoute(btn)"
+          [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+          [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null"
+          queryParamsHandling="merge">
+          <ng-icon [svg]="btn.icon" class="text-xl" aria-hidden="true"></ng-icon>
+          <span class="text-[0.9rem] leading-none">{{ btn.label }}</span>
+        </a>
+    }
+    </div>
+  </ng-template>
+  <button type="button"
+    class="btn btn-primary btn-circle fixed bottom-4 right-4 z-[10001] min-[1100px]:hidden shadow-lg interactive"
+    aria-label="Open menu" [attr.aria-expanded]="menuOpen" aria-controls="nav-overlay-menu" (click)="toggleMenu()">
+    <div class="tooltip tooltip-open" data-tip="Menu"><span class="text-xl" aria-hidden="true">☰</span></div>
+  </button>
+  <div class="fixed inset-0 bg-base-300/60 backdrop-blur z-[10000] min-[1100px]:hidden interactive"
+    [class.hidden]="!menuOpen" (click)="closeMenu()"></div>
+  <div id="nav-overlay-menu" role="dialog" aria-modal="true"
+    class="fixed bottom-4 right-4 left-4 sm:left-auto sm:w-80 bg-base-100 rounded-box shadow-xl border border-base-300 p-3 z-[10002] min-[1100px]:hidden interactive"
+    [class.hidden]="!menuOpen" [attr.aria-hidden]="!menuOpen" (click)="$event.stopPropagation()">
+    <div class="flex items-center justify-between mb-2">
+      <span class="font-semibold">Menu</span>
+      <button type="button" class="btn btn-ghost btn-sm" (click)="closeMenu()" aria-label="Close menu">✖</button>
+    </div>
+    <ul class="menu w-full">
+      @for(btn of topButtons; track $index) {
+        <li>
+        <a routerLinkActive="active bg-primary text-primary-content" #rla="routerLinkActive"
+          [routerLinkActiveOptions]="{ exact: false }" (click)="debugRoute(btn); closeMenu()"
+          [attr.aria-current]="rla.isActive ? 'page' : null"
+          [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+          [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null"
+          queryParamsHandling="merge">
+          <ng-icon [svg]="btn.icon" class="mr-2" aria-hidden="true"></ng-icon>
+          {{ btn.label }}
+        </a>
+      </li>
+      }
+      @for(btn of middleButtons; track $index){
+        <li>
+          <a routerLinkActive="active bg-primary text-primary-content" #rla="routerLinkActive"
+            [routerLinkActiveOptions]="{ exact: false }" (click)="debugRoute(btn); closeMenu()"
+            [attr.aria-current]="rla.isActive ? 'page' : null"
+            [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+            [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null"
+            queryParamsHandling="merge">
+            <ng-icon [svg]="btn.icon" class="mr-2" aria-hidden="true"></ng-icon>
+            {{ btn.label }}
+          </a>
+        </li>
+      }
+      <li class="menu-title mt-2">&nbsp;</li>
+      @for(btn of bottomButtons; track $index) {
+        <li>
+          <a routerLinkActive="active bg-primary text-primary-content" #rla="routerLinkActive"
+            [routerLinkActiveOptions]="{ exact: false }" (click)="debugRoute(btn); closeMenu()"
+            [attr.aria-current]="rla.isActive ? 'page' : null"
+            [routerLink]="isRouteObject(btn.route) ? [btn.route.path] : [btn.route]"
+            [queryParams]="isRouteObject(btn.route) ? btn.route.queryParams : null"
+            queryParamsHandling="merge">
+            <ng-icon [svg]="btn.icon" class="mr-2" aria-hidden="true"></ng-icon>
+            {{ btn.label }}
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+</div>

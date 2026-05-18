@@ -204,11 +204,7 @@ export class ElasticService {
     queryData.size = 0;
     queryData['_source'] = '';
 
-    console.log('[ElasticService] Filter options query:', JSON.stringify(queryData, null, 2));
-
     const results = await this.searchEndpoints(queryData);
-
-    console.log('[ElasticService] Filter options results:', JSON.stringify(results, null, 2));
 
     return results;
   }
@@ -317,8 +313,6 @@ export class ElasticService {
         continue;
       }
 
-      console.log('[ElasticService] Sending query to endpoint', endpoint.id, ':', JSON.stringify(queryData, null, 2));
-
       const searchPromise: Promise<estypes.SearchResponse<T>> =
         this.api.postData<estypes.SearchResponse<T>>(
           endpoint.elastic,
@@ -336,19 +330,12 @@ export class ElasticService {
     const searchResults: estypes.SearchResponse<T>[] =
       await Promise.all(searchPromises);
 
-    console.log('[ElasticService] Raw results from Elasticsearch:', JSON.stringify(searchResults, null, 2));
-
     const searchResultsWithEndpointIds: ElasticEndpointSearchResponse<T>[] =
       searchResults.map((searchResult, index) => {
         const resultWithEndpoint = {
           ...searchResult,
           endpointId: searchPromisesAndEndpoints[index].endpointId,
         };
-
-        // Log first hit structure to understand the data format
-        if (searchResult.hits?.hits?.length > 0) {
-          console.log('[ElasticService] First hit structure:', JSON.stringify(searchResult.hits.hits[0], null, 2));
-        }
 
         return resultWithEndpoint;
       });
