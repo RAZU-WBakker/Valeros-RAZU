@@ -4,6 +4,7 @@ import { ColofonComponent } from './components/views/colofon/colofon.component';
 import { HomeComponent } from './components/views/home/home.component';
 import { SearchComponent } from './components/views/search/search.component';
 import { SitemapComponent } from './components/views/sitemap/sitemap.component';
+import { MapComponent } from './components/views/map/map.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,10 @@ export const routes: Routes = [
   {
     path: 'toegankelijkheidsverklaring',
     component: AccessibilityEvaluationComponent,
+  },
+  {
+    path: 'map',
+    component: MapComponent,
   },
   {
     path: '**',

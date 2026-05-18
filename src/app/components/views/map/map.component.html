@@ -1,0 +1,31 @@
+<app-header class="fixed top-0 left-0 right-0 z-10"></app-header>
+
+<div #mapViewNode style="height: 100vh; width: 100vw; position: absolute; top: 0; left: 0; right: 0; bottom: 0;"></div>
+
+@if(view) {
+<div class="arcgis-components-container">
+    <arcgis-expand class="legend-expand" expand-icon="legend-right" expand-tooltip="Legenda">
+        <arcgis-legend [view]="view"></arcgis-legend>
+    </arcgis-expand>
+
+    <arcgis-expand class="layer-list-expand" expand-icon="layers" expand-tooltip="Kaartlagen">
+        <arcgis-layer-list [view]="view"></arcgis-layer-list>
+    </arcgis-expand>
+</div>
+}
+@if(loading){
+<div class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Kaart laden...</div>
+</div>
+}
+@if(error){
+<div class="error-overlay">
+    <div class="error-message">
+        Er is een fout opgetreden bij het laden van de kaart.
+        <button (click)="initializeMap()">Opnieuw proberen</button>
+    </div>
+</div>
+}
+
+<app-nav-buttons layout="bottom-tabs"></app-nav-buttons>
