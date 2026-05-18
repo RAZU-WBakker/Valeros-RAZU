@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { NgClass } from '@angular/common';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgIcon } from '@ng-icons/core';
 import { featherX } from '@ng-icons/feather-icons';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UrlService } from '../../../services/url.service';
@@ -8,21 +10,26 @@ import { ViewContainerComponent } from '../view-container/view-container.compone
 
 @Component({
   selector: 'app-colofon',
-  imports: [HeaderComponent, ViewContainerComponent, TranslatePipe, RouterLink],
+  imports: [
+    HeaderComponent,
+    ViewContainerComponent,
+    NgClass,
+    TranslatePipe,
+    NgIcon,
+  ],
   templateUrl: './colofon.component.html',
-  styleUrl: './colofon.component.css',
+  styleUrl: './colofon.component.css'
 })
-export class ColofonComponent implements OnInit {
+export class ColofonComponent {
   protected readonly HeaderView = HeaderView;
   protected readonly featherX = featherX;
   constructor(
     public router: Router,
     public url: UrlService,
-  ) {}
-
-  async ngOnInit() {}
-
+  ) { }
   async onButtonClicked(url: string) {
-    await this.url.navigateByUrlIgnoringQueryParamChange(url);
+    this.url.ignoreQueryParamChange = true;
+    await this.router.navigateByUrl(url);
+    this.url.ignoreQueryParamChange = false;
   }
 }
