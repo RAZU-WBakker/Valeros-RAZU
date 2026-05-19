@@ -75,6 +75,18 @@ export class CustomFiltersRegistry {
     );
   }
 
+  clearAllExcept(filterIdsToKeep: string[] = []) {
+    const exclude = new Set(filterIdsToKeep);
+    this._all.value.forEach(
+      (service: CustomFilterService, filterId: string) => {
+        if (exclude.has(filterId)) {
+          return;
+        }
+        service.clear();
+      },
+    );
+  }
+
   register(filterId: string, service: CustomFilterService) {
     console.log('Registering custom filter service', filterId, service);
     const currentFilters = new Map(this._all.value);
