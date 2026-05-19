@@ -51,8 +51,23 @@ export class FilterOptionsComponent {
   }
 
   clearFilters(): void {
-    this.filters.toggleMultiple([...this.filters.enabled.value]);
-    this.customFiltersRegistry.clearAll();
-    this.filters.searchTrigger.emit({ clearFilters: true });
+    const filterIdsToKeep = new Set(
+      this.Settings.filtering.clearButtonExcludedFilterIds,
+    );
+
+    const filtersToKeep = this.filters.enabled.value.filter(
+      (filter) => filterIdsToKeep.has(filter.filterId ?? ''),
+    );
+
+    this.filters.prevEnabled = filtersToKeep.map((filter) => ({ ...filter }));
+    this.filters.enabled.next(filtersToKeep);
+
+    const customFilterIdsToKeep =
+      this.Settings.filtering.clearButtonExcludedFilterIds.filter((filterId) =>
+        this.customFiltersRegistry.getAll().has(filterId),
+      );
+
+    this.customFiltersRegistry.clearAllExcept(customFilterIdsToKeep);
+    this.filters.searchTrigger.emit({ clearFilters: false });
   }
 }

@@ -51,4 +51,5 @@ export const razuFilteringSettings: FilteringSettings = {
       hideValueIds: [...hideFilterOptionValueIds],
     }
   },
+  clearButtonExcludedFilterIds: ['type'],
 };

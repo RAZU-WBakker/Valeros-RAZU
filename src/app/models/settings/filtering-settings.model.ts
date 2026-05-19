@@ -5,4 +5,5 @@ export interface FilteringSettings {
   showOrganizationsFilter: boolean;
   minNumOfValuesForFilterOptionToAppear: number;
   filterOptions: Record<string, FilterOptionModel>;
+  clearButtonExcludedFilterIds: string[];
 }

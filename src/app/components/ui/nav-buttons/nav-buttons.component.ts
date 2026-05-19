@@ -124,6 +124,11 @@ export class NavButtonsComponent implements OnInit, OnDestroy {
                                         type: 2,
                                         fieldIds: ['researched.keyword'],
                                         valueIds: ['Ja']
+                                    },
+                                    type: {
+                                        type: 2,
+                                        fieldIds: ['type.keyword'],
+                                        valueIds: ['https://w3id.org/italia/onto/CLV/Feature']
                                     }
                                 }
                             }),

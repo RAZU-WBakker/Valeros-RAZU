@@ -5,6 +5,7 @@ export const filteringSettings: FilteringSettings = {
   showOrganizationsFilter: false,
   minNumOfValuesForFilterOptionToAppear: 1,
   filterOptions: {},
+  clearButtonExcludedFilterIds: [],
 };
 
 // Example:
