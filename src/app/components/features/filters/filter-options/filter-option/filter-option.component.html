@@ -23,6 +23,7 @@
             [url]="!value.label ? value.ids[0] : undefined"
             [suffixStr]="getFilterOptionCountStr(value.filterHitCount)"
             [shouldHighlight]="false"
+            class="text-white"
           >
           </app-node-link>
         }
@@ -33,7 +34,7 @@
 
 @if (hasMoreToShow) {
   <button
-    class="btn btn-sm btn-primary mt-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+    class="btn btn-sm btn-secondary mt-2 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
     (click)="onShowMoreClicked()"
     [disabled]="filterService.loading.value"
     role="region"

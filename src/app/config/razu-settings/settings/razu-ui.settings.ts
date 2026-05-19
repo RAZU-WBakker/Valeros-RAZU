@@ -5,7 +5,7 @@ import { uiSettings } from '../../default-settings/settings/ui.settings';
 
 export const razuUiSettings: UiSettings = {
   ...uiSettings,
-  labelMaxChars: 25,
+  labelMaxChars: 250,
   header: {
     ...uiSettings.header,
     showLogo: true,
