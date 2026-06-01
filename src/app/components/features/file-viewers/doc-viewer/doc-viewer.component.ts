@@ -28,9 +28,9 @@ export class DocViewerComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() error = new EventEmitter<Error>();
   isConvertingPDF = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     // this.initPdfViewer();
@@ -79,9 +79,10 @@ export class DocViewerComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.fileType === FileType.PDF) {
       // TODO: Fix CORS issues on localhost / dev without corsproxy
       const isLocalhost = window.location.hostname === 'localhost';
-      return isLocalhost
-        ? 'https://corsproxy.io/?url=' + encodeURIComponent(this.url)
-        : this.url;
+      return this.url;
+      // return isLocalhost
+      //   ? 'https://corsproxy.io/?url=' + encodeURIComponent(this.url)
+      //   : this.url;
     }
 
     if (!Settings.endpoints.pdfConversionUrl) {
