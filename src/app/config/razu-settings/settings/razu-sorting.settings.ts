@@ -4,6 +4,7 @@ import { sortingSettings } from '../../default-settings/settings/sorting.setting
 
 export const razuSortingSettings: SortingSettings = {
   ...sortingSettings,
+  default: 'title-a-z',
   options: {
     ...sortingSettings.options,
     'title-a-z': {
@@ -16,15 +17,15 @@ export const razuSortingSettings: SortingSettings = {
       label: 'Titel (Z-A)',
       order: SortOrder.Descending,
     },
-    'date-asc': {
-      fields: ['startDate.keyword'],
-      label: 'Datum (oudste eerst)',
-      order: SortOrder.Ascending,
-    },
-    'date-desc': {
-      fields: ['startDate.keyword'],
-      label: 'Datum (nieuwste eerst)',
-      order: SortOrder.Descending,
-    },
+    // 'date-asc': {
+    //   fields: ['startDate.keyword'],
+    //   label: 'Datum (oudste eerst)',
+    //   order: SortOrder.Ascending,
+    // },
+    // 'date-desc': {
+    //   fields: ['startDate.keyword'],
+    //   label: 'Datum (nieuwste eerst)',
+    //   order: SortOrder.Descending,
+    // },
   },
 };
