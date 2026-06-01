@@ -7,6 +7,7 @@ import {
   RenderMode,
 } from '../../../../models/settings/render-component-settings.type';
 import { TypeRenderComponentInput } from '../../../../models/type-render-component-input.model';
+import { DetailsService } from '../../../../services/details.service';
 import { NodeService } from '../../../../services/node/node.service';
 import { RenderComponentService } from '../../../../services/render-component.service';
 import { NodeTableViewComponent } from '../node-render-components/node-table-view/node-table-view.component';
@@ -26,7 +27,8 @@ export class NodeRendererComponent implements OnInit {
   constructor(
     public nodes: NodeService,
     public renderComponents: RenderComponentService,
-  ) {}
+    public details: DetailsService,
+  ) { }
 
   ngOnInit() {
     this.initComponents();
@@ -36,10 +38,9 @@ export class NodeRendererComponent implements OnInit {
     if (!this.node) {
       return;
     }
-    this.componentsToShow = this.renderComponents.getComponentsToShow(
-      this.node,
-      RenderMode.ByType,
-    );
+    this.componentsToShow = this.details.isShowing()
+      ? this.renderComponents.getComponentsToShow(this.node, RenderMode.ByType)
+      : this.renderComponents.getDynamicallyRenderedComponents(this.node, RenderMode.ByType);
 
     this.hasComponents = this.componentsToShow.length > 0;
   }

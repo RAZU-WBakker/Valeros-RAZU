@@ -10,6 +10,9 @@ import {
   RenderMode,
 } from '../../../models/settings/render-component-settings.type';
 import { renderComponentSettings } from '../../default-settings/settings/render-component.settings';
+import { RenderTabWithDocViewerComponent } from '../../../components/custom-render-components/by-type/render-tab-with-doc-viewer/render-tab-with-doc-viewer.component';
+import { HemiwStoryComponent } from '../../../components/custom-render-components/by-type/hemiw-story/hemiw-story.component';
+import { HemiwSimpleFeatureComponent } from '../../../components/custom-render-components/by-type/hemiw-simple-feature/hemiw-simple-feature.component';
 
 export const razuRenderComponentSettings: RenderComponentsSettings = {
   [RenderMode.ByType]: [
@@ -20,6 +23,27 @@ export const razuRenderComponentSettings: RenderComponentsSettings = {
       ],
       requiresExplicitRendering: true,
     },
+    {
+      component: RenderTabWithDocViewerComponent,
+      predicates: [
+        'https://huizenenmenseninwijk.nl/def/hemiw/onderzochtPand',
+      ],
+      requiresExplicitRendering: true,
+    },
+    {
+      component: HemiwStoryComponent,
+      predicates: [
+        'https://huizenenmenseninwijk.nl/def/hemiw/verhaal',
+      ],
+      requiresExplicitRendering: true,
+    },
+    {
+      component: HemiwSimpleFeatureComponent,
+      predicates: [
+        'https://huizenenmenseninwijk.nl/def/hemiw/simpleFeature',
+      ],
+      requiresExplicitRendering: true,
+    }
   ],
   [RenderMode.ByPredicate]: [
     ...renderComponentSettings[RenderMode.ByPredicate],
@@ -65,6 +89,13 @@ export const razuRenderComponentSettings: RenderComponentsSettings = {
       component: LdtoUrlBestandComponent,
       predicates: ['https://data.razu.nl/def/ldto/URLBestand'],
     },
+    // {
+    //   component: FileRendererComponent,
+    //   predicates: [
+    //     'https://schema.org/image',
+    //   ],
+    //   requiresExplicitRendering: true,
+    // },
     {
       component: FileRendererComponent,
       predicates: [

@@ -1,0 +1,31 @@
+.node-data {
+    margin-top: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.docviewer {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    /* allow shrinking in flex/grid parents */
+    height: auto;
+    min-height: 42rem;
+    overflow: hidden;
+    /* prevent horizontal scroll bleed */
+}
+
+@media (max-width: 1024px) {
+    .docviewer {
+        min-height: 28rem;
+    }
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    font-style: italic;
+    color: #6c757d;
+    margin: 10px 0;
+}
