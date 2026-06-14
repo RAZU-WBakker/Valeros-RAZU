@@ -1,11 +1,11 @@
 @if (url) {
+@if (isConvertingPDF) {
+<div class="text-center my-2">
+  <span class="loading loading-spinner relative top-[0.4rem] mr-2"></span>
   @if (isConvertingPDF) {
-    <div class="text-center my-2">
-      <span class="loading loading-spinner relative top-[0.4rem] mr-2"></span>
-      @if (isConvertingPDF) {
-        <span class="italic">Bestand converteren naar PDF... </span>
-      }
-    </div>
+  <span class="italic">Bestand converteren naar PDF... </span>
   }
-  <ng2-pdfjs-viewer #pdfViewer></ng2-pdfjs-viewer>
+</div>
+}
+<ng2-pdfjs-viewer #pdfViewer></ng2-pdfjs-viewer>
 }

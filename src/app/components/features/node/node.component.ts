@@ -227,6 +227,11 @@ export class NodeComponent implements OnInit, OnChanges {
   }
 
   async checkShouldShowIIIF() {
+    if (this.details.isShowing() && this.files.value.length > 0) {
+      this.shouldShowIIIFSubject.next(true);
+      return;
+    }
+
     const shouldShow = await this.nodeSection.checkShouldShowIIIF(
       this.node,
       this.files.value,

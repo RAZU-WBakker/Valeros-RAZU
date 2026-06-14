@@ -20,12 +20,22 @@
             "outputPath": "dist/view-a-lod",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": ["zone.js"],
+            "loader": {
+              ".woff2": "file"
+            },
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              {
+                "glob": "serve.json",
+                "input": "src",
+                "output": "/"
+              },
               {
                 "glob": "**/*",
                 "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
@@ -37,17 +47,27 @@
                 "output": "/assets/arcgis"
               }
             ],
-            "styles": ["src/styles.css", "src/theme.css"],
+            "styles": [
+              "src/styles.css",
+              "src/theme.css",
+              "node_modules/@arcgis/core/assets/esri/themes/light/main.css"
+            ],
             "scripts": []
           },
           "configurations": {
             "production": {
-              "externalDependencies": ["http", "https", "url", "util", "net"],
+              "externalDependencies": [
+                "http",
+                "https",
+                "url",
+                "util",
+                "net"
+              ],
               "budgets": [
                 {
                   "type": "initial",
                   "maximumWarning": "1mb",
-                  "maximumError": "3mb"
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -56,19 +76,16 @@
                 }
               ],
               "outputHashing": "all",
-              "fileReplacements": [
-                {
-                  "replace": "src/app/config/razu-settings/settings/endpoints/razu-endpoint.settings.ts",
-                  "with": "src/app/config/razu-settings/settings/endpoints/razu-endpoint.production.settings.ts"
-                },
-                {
-                  "replace": "src/app/config/razu-settings/settings/matomo/razu-matomo.settings.ts",
-                  "with": "src/app/config/razu-settings/settings/matomo/razu-matomo.production.settings.ts"
-                }
-              ]
+              "fileReplacements": []
             },
             "acceptance": {
-              "externalDependencies": ["http", "https", "url", "util", "net"],
+              "externalDependencies": [
+                "http",
+                "https",
+                "url",
+                "util",
+                "net"
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -90,7 +107,13 @@
               ]
             },
             "test": {
-              "externalDependencies": ["http", "https", "url", "util", "net"],
+              "externalDependencies": [
+                "http",
+                "https",
+                "url",
+                "util",
+                "net"
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -117,7 +140,13 @@
               "sourceMap": true
             },
             "dev-build": {
-              "externalDependencies": ["http", "https", "url", "util", "net"],
+              "externalDependencies": [
+                "http",
+                "https",
+                "url",
+                "util",
+                "net"
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -156,7 +185,10 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -173,7 +205,10 @@
                 "output": "/assets/arcgis"
               }
             ],
-            "styles": ["src/styles.css", "src/theme.css"],
+            "styles": [
+              "src/styles.css",
+              "src/theme.css"
+            ],
             "scripts": []
           }
         }

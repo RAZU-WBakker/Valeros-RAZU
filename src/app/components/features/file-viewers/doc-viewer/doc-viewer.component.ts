@@ -33,7 +33,11 @@ export class DocViewerComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void { }
 
   ngAfterViewInit(): void {
-    // this.initPdfViewer();
+    if (this.pdfViewer) {
+      this.pdfViewer.viewerFolder = '/assets/pdfjs';
+      this.pdfViewer.externalWindow = false;
+      console.log('[DocViewer] ngAfterViewInit - set viewerFolder:', this.pdfViewer.viewerFolder);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,8 +48,11 @@ export class DocViewerComponent implements OnInit, AfterViewInit, OnChanges {
 
   initPdfViewer() {
     console.log('Initializing PDF viewer...');
+    console.log('[DocViewer] Input url:', this.url);
+    console.log('[DocViewer] File type:', this.fileType);
 
     const pdfUrl: string | null = this._getPdfUrl();
+    console.log('[DocViewer] Resolved PDF URL:', pdfUrl);
     if (!pdfUrl) {
       this.error.emit(new Error('No PDF URL found'));
       return;
@@ -63,11 +70,17 @@ export class DocViewerComponent implements OnInit, AfterViewInit, OnChanges {
       )
       .subscribe({
         next: (result) => {
+          console.log('[DocViewer] PDF blob loaded, size:', result.size, 'type:', result.type);
+          console.log('[DocViewer] pdfViewer element:', this.pdfViewer);
+          // Set viewer folder before assigning pdfSrc
+          this.pdfViewer.viewerFolder = '/assets/pdfjs';
+          console.log('[DocViewer] Set viewerFolder to:', this.pdfViewer.viewerFolder);
           this.pdfViewer.pdfSrc = result;
           this.pdfViewer.refresh();
+          console.log('[DocViewer] refresh() called');
         },
         error: (error) => {
-          console.error('Error loading PDF:', error);
+          console.error('[DocViewer] Error loading PDF blob:', error);
           this.error.emit(error);
         },
       });

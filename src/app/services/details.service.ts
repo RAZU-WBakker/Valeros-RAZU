@@ -46,7 +46,14 @@ export class DetailsService {
   }
 
   getLinkFromUrl(url: string): string {
-    const isAlreadyDetailsUrl = decodeURIComponent(url).startsWith(
+    let decodedUrl: string;
+    try {
+      decodedUrl = decodeURIComponent(url);
+    } catch (e) {
+      // If decoding fails (malformed URI), treat as not a details URL
+      decodedUrl = url;
+    }
+    const isAlreadyDetailsUrl = decodedUrl.startsWith(
       `/${Settings.url.urls.details}`,
     );
     if (isAlreadyDetailsUrl || !isValidHttpUrl(url)) {

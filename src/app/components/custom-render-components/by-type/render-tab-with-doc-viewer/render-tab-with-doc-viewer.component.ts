@@ -52,7 +52,9 @@ export class RenderTabWithDocViewerComponent extends TypeRenderComponent impleme
         const rawUrlBuildingHistory = this.data?.node?.[bouwgeschiedenisIri]?.[0]?.value;
 
         if (rawUrlBuildingHistory) {
+            console.log('[RenderTab] Raw building history URL:', rawUrlBuildingHistory);
             this.urlService.proxyUrl(rawUrlBuildingHistory).then(url => {
+                console.log('[RenderTab] Proxied building history URL:', url);
                 this.buildinghistoryPDF = url;
             });
         } else {
@@ -62,7 +64,9 @@ export class RenderTabWithDocViewerComponent extends TypeRenderComponent impleme
         const rawUrlPeopleHistory = this.data?.node?.[peoplehistoryIri]?.[0]?.value;
 
         if (rawUrlPeopleHistory) {
+            console.log('[RenderTab] Raw people history URL:', rawUrlPeopleHistory);
             this.urlService.proxyUrl(rawUrlPeopleHistory).then(url => {
+                console.log('[RenderTab] Proxied people history URL:', url);
                 this.peoplehistoryPDF = url;
             });
         } else {
@@ -73,13 +77,18 @@ export class RenderTabWithDocViewerComponent extends TypeRenderComponent impleme
             this.sparql
                 .getAssociatedMediaFilesWithNames(subjectId)
                 .then(async (items) => {
+                    console.log('[RenderTab] Associated media items:', items);
                     const proxied = await Promise.all(
                         items
                             .filter((i) => !!i.file)
-                            .map(async (i) => ({
-                                url: await this.urlService.proxyUrl(i.file),
-                                name: i.name,
-                            }))
+                            .map(async (i) => {
+                                const proxiedUrl = await this.urlService.proxyUrl(i.file);
+                                console.log('[RenderTab] Media file proxied:', i.file, '->', proxiedUrl);
+                                return {
+                                    url: proxiedUrl,
+                                    name: i.name,
+                                };
+                            })
                     );
                     this.associatedMedia = proxied;
                 })

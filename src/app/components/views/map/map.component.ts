@@ -21,12 +21,6 @@ export class MapComponent implements OnInit, OnDestroy {
     view: MapView | null = null;
 
     ngOnInit(): void {
-        // Load the ArcGIS CSS
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://js.arcgis.com/4.28/esri/themes/light/main.css';
-        document.head.appendChild(link);
-
         // Define ArcGIS web components
         defineCustomElements(window);
         this.initializeMap();
