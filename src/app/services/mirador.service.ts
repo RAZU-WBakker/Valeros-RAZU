@@ -3,7 +3,7 @@ import { Injectable, NgZone } from '@angular/core';
 import Mirador from 'mirador/dist/es/src/index';
 // prettier-ignore
 // @ts-ignore
-import { getCanvasIndex,getCurrentCanvas } from 'mirador/dist/es/src/state/selectors';
+import { getCanvasIndex, getCurrentCanvas } from 'mirador/dist/es/src/state/selectors';
 // @ts-ignore
 import textOverlayPlugin from 'mirador-textoverlay/es/index';
 import { BehaviorSubject } from 'rxjs';
@@ -27,7 +27,7 @@ export class MiradorService {
     private iiifService: IIIFService,
     private urlService: UrlService,
     private miradorHighlight: MiradorHighlightService,
-  ) {}
+  ) { }
 
   createViewer(config: MiradorConfig): Promise<any> {
     return this.ngZone.runOutsideAngular(async () => {
@@ -36,7 +36,7 @@ export class MiradorService {
       const miradorInstance = Mirador.viewer(miradorConfig, [
         ...textOverlayPlugin,
       ]);
-      this._setupAutoResetZoomOnLoaded(miradorInstance);
+      this._setupAutoResetZoomOnCanvasChange(miradorInstance);
       return miradorInstance;
     });
   }
@@ -133,31 +133,47 @@ export class MiradorService {
           allowClose: false,
           ...(config.thumbnailNavigation
             ? {
-                thumbnailNavigationPosition: 'far-right',
-                thumbnailNavigationVisible: true,
-              }
+              thumbnailNavigationPosition: 'far-right',
+              thumbnailNavigationVisible: true,
+            }
             : {}),
         },
       ],
     };
   }
 
-  private _setupAutoResetZoomOnLoaded(miradorInstance: any): void {
-    const unsubscribe = miradorInstance.store.subscribe(() => {
+  private _setupAutoResetZoomOnCanvasChange(miradorInstance: any): void {
+    let lastCanvasId: string | null = null;
+
+    miradorInstance.store.subscribe(() => {
       const state = miradorInstance.store.getState();
 
-      if (state.windows && Object.keys(state.windows).length > 0) {
-        console.log('Mirador loaded');
-        setTimeout(() => {
-          const resetZoomButton: HTMLButtonElement | null =
-            document.querySelector('button[aria-label="Reset zoom"]');
-          if (resetZoomButton) {
-            console.log('Resetting Mirador zoom');
-            resetZoomButton.click();
-          }
-        }, 1);
-        unsubscribe();
+      const windows = state.windows || {};
+      const windowId = Object.keys(windows)[0];
+      if (!windowId) {
+        return;
       }
+
+      const currentCanvas = getCurrentCanvas(state, { windowId });
+      const currentCanvasId = currentCanvas?.id ?? null;
+      if (!currentCanvasId || currentCanvasId === lastCanvasId) {
+        return;
+      }
+
+      lastCanvasId = currentCanvasId;
+      console.log('Mirador canvas changed, resetting zoom', currentCanvasId);
+      this._resetZoom();
     });
+  }
+
+  private _resetZoom(): void {
+    setTimeout(() => {
+      const resetZoomButton: HTMLButtonElement | null =
+        document.querySelector('button[aria-label="Reset zoom"]');
+      if (resetZoomButton) {
+        console.log('Resetting Mirador zoom');
+        resetZoomButton.click();
+      }
+    }, 1);
   }
 }
