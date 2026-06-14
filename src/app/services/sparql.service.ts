@@ -22,7 +22,7 @@ export class SparqlService {
     private api: ApiService,
     private settings: SettingsService,
     private endpoints: EndpointService,
-  ) {}
+  ) { }
 
   getFederatedQuery(
     queryTemplate: string,
@@ -404,15 +404,19 @@ OPTIONAL { ?beperkingGebruikType <http://www.w3.org/2004/02/skos/core#prefLabel>
           ldto:bestandsformaat ?format ;
           ldto:naam ?name ;
           ldto:URLBestand ?url ;
-          iiif:service ?iiifService ;
-          schema:width ?width ;
-          schema:height ?height ;
-          schema:position ?position .
+          iiif:service ?iiifService .
+
+VALUES ?widthPred { <http://schema.org/width> <https://schema.org/width> }
+VALUES ?heightPred { <http://schema.org/height> <https://schema.org/height> }
+VALUES ?positionPred { <http://schema.org/position> <https://schema.org/position> }
+?fileURI ?widthPred ?width ;
+         ?heightPred ?height ;
+         ?positionPred ?position .
 
 OPTIONAL {
     ?altoURI ldto:URLBestand ?altoUrl ;
             ldto:isRepresentatieVan <${id}> ;
-            schema:position ?position ;
+            ?positionPred ?position ;
             ldto:naam ?altoName ;
             ldto:bestandsformaat ?altoFormat .
 
@@ -424,7 +428,6 @@ FILTER(?format IN (${imageFormats})) # JPG, TIF`;
     const query = `
 PREFIX ldto: <https://data.razu.nl/def/ldto/>
 PREFIX iiif: <http://iiif.io/api/presentation/3#>
-PREFIX schema: <http://schema.org/>
 SELECT DISTINCT ?fileURI ?format ?name ?url ?iiifService ?width ?height ?position ?altoURI ?altoUrl ?altoName WHERE {
  ${this.getFederatedQuery(iiifDataQueryTemplate)}
 } ORDER BY ?position`;
@@ -453,12 +456,12 @@ SELECT DISTINCT ?fileURI ?format ?name ?url ?iiifService ?width ?height ?positio
   ?bestand_uri a ldto:Bestand .
   ?bestand_uri ldto:bestandsformaat <https://data.razu.nl/id/bestandsformaat/63e8775df9a69fa0aadbb461fafe4c1e> .
   ?bestand_uri ldto:URLBestand ?altoUrl .
-  ?bestand_uri schema:position "${pageNum}"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  VALUES ?positionPred { <http://schema.org/position> <https://schema.org/position> }
+  ?bestand_uri ?positionPred "${pageNum}"^^<http://www.w3.org/2001/XMLSchema#integer> .
 
  `;
     const query = `
 prefix ldto: <https://data.razu.nl/def/ldto/>
-prefix schema: <http://schema.org/>
 
 select ?altoUrl where {
      ${this.getFederatedQuery(sparqlTemplate)}
