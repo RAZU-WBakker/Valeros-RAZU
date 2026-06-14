@@ -1,14 +1,15 @@
 {
   "general": {
-    "site-holder-full": "Regionaal Archief Zuid-Utrecht",
-    "site-holder-short": "RAZU",
-    "title": "E-depot RAZU",
-    "page-title": "RAZU - Digitaal archief van Zuid-Utrecht",
-    "colofon-title": "RAZU - Colofon",
+    "site-holder-full": "Huizen en Mensen in Wijk",
+    "site-holder-short": "Hemiw",
+    "title": "Huizen & Mensen in Wijk",
+    "page-title": "Huizen & Mensen in Wijk",
+    "colofon-title": "Hemiw - Colofon",
     "and": "en",
     "back": "Terug",
     "close": "Sluiten",
-    "example": "Voorbeeld"
+    "example": "Voorbeeld",
+    "about": "Over"
   },
   "homescreen": {
     "flavour-text-part-1": "Hier kunt u zoeken in de gecombineerde archieven van de gemeenten van",
@@ -24,10 +25,10 @@
   },
   "search-interface": {
     "search": "Zoek",
-    "search-e-depot-razu": "Zoek in E-depot RAZU",
+    "search-e-depot-razu": "Zoek in de onderzoeksresultaten",
     "searching": "Zoeken",
-    "search-placeholder-full": "Zoek in E-depot RAZU, bijv. 'weekmarkt'",
-    "search-placeholder-short": "Bijv. 'weekmarkt'",
+    "search-placeholder-full": "Zoek in de onderzoeksresultaten, bijv. 'Oeverstraat 9'",
+    "search-placeholder-short": "Bijv. 'Oeverstraat 9'",
     "no-results-found": "Geen resultaten",
     "results": "resultaten",
     "show-details": "Toon details",
