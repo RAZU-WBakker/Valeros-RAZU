@@ -8,6 +8,7 @@ import {
 
 export const razuTypePredicates: string[] = [
   'type',
+  'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
 ];
 
 export const razuLabelPredicates: string[] = [

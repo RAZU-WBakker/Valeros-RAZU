@@ -26,7 +26,7 @@ export class DetailsComponent {
     public routing: RoutingService,
     public details: DetailsService,
     public scroll: ScrollService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -36,7 +36,11 @@ export class DetailsComponent {
       }
 
       nodeId = this.removeHashFromNodeId(nodeId);
-      nodeId = decodeURIComponent(nodeId);
+      try {
+        nodeId = decodeURIComponent(nodeId);
+      } catch (e) {
+        // Keep nodeId as-is if decoding fails (malformed URI)
+      }
 
       this.scroll.onNavigateToDetails(nodeId);
       void this.initNodeById(nodeId);

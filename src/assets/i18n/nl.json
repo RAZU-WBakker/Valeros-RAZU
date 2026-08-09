@@ -27,8 +27,8 @@
     "search": "Zoek",
     "search-e-depot-razu": "Zoek in de onderzoeksresultaten",
     "searching": "Zoeken",
-    "search-placeholder-full": "Zoek in de onderzoeksresultaten, bijv. 'Oeverstraat 9'",
-    "search-placeholder-short": "Bijv. 'Oeverstraat 9'",
+    "search-placeholder-full": "Zoek in de onderzoeksresultaten, bijv. \"Oeverstraat 19\"",
+    "search-placeholder-short": "Bijv. \"Oeverstraat 19\"",
     "no-results-found": "Geen resultaten",
     "results": "resultaten",
     "show-details": "Toon details",
@@ -65,15 +65,15 @@
       },
       "relevance": {
         "title": "Relevantie sortering",
-        "description": "Zoekresultaten worden automatisch gesorteerd op relevantie met behulp van Elasticsearch. De meest relevante resultaten worden bovenaan getoond."
+        "description": "Zoekresultaten kunnen worden gesorteerd op relevantie met behulp van Elasticsearch. De meest relevante resultaten worden bovenaan getoond."
       },
       "ocr": {
         "title": "OCR tekstherkenning",
-        "description": "De krantentekst is verwerkt met OCR (Optical Character Recognition). Dit stelde ons in staat om een grote collectie doorzoekbaar te maken, maar de tekst kan soms herkenningsfouten bevatten."
+        "description": "Sommige afbeeldingen kunnen voorzien zijn van tekstherkenning (OCR). Dit is vaak automatisch gegenereerd en kan daarom fouten bevatten."
       },
       "referral": {
         "title": "Deze zoekomgeving",
-        "description": "Hieronder staan enige zoektips. Wilt u meer weten over hoe deze zoekomgeving werkt? Op de website van RAZU vindt u een uitgebreide uitleg.",
+        "description": "Hieronder staan enige zoektips. Wilt u meer weten over hoe deze zoekomgeving werkt? Op de website van het RAZU vindt u een uitgebreide uitleg.",
         "url": "Klik hier om meer te lezen."
       }
     },

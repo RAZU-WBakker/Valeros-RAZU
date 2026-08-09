@@ -18,8 +18,7 @@ import { NodeTableComponent } from './node-table/node-table.component';
 })
 export class NodeTableViewComponent
   extends NodeRenderComponent
-  implements OnInit
-{
+  implements OnInit {
   canShowDetails = false;
   numOfDetailsPreds = 0;
 

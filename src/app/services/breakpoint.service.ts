@@ -3,11 +3,11 @@ import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 
 export const TAILWIND_BREAKPOINTS = {
-  sm: 640,
-  md: 768,
-  lg: 1024,
-  xl: 1280,
-  '2xl': 1536,
+  sm: 1100,
+  md: 1200,
+  lg: 1400,
+  xl: 1600,
+  '2xl': 1800,
 };
 
 export type Breakpoint = keyof typeof TAILWIND_BREAKPOINTS | 'xs';

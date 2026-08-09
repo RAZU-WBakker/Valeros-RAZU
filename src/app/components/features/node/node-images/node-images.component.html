@@ -1,17 +1,13 @@
 @if (imageUrls && imageUrls.length > 0) {
-  <!-- MIRADOR VIEWER -->
-  @if (useViewer) {
-    <app-mirador [imageUrls]="imageUrls"></app-mirador>
-  }
-  <!-- THUMB -->
-  @if (!useViewer) {
-    <div class="w-full h-full overflow-y-scroll">
-      <img
-        [src]="thumbnailUrls[0]"
-        [alt]="imageLabel ?? 'Unknown image'"
-        class="w-full h-full object-cover"
-        (error)="onImageLoadError($event)"
-      />
-    </div>
-  }
+<!-- MIRADOR VIEWER -->
+@if (useViewer) {
+<app-mirador [imageUrls]="imageUrls"></app-mirador>
+}
+<!-- THUMB -->
+@if (!useViewer) {
+<div class="w-full h-full overflow-y-scroll">
+  <img [src]="thumbnailUrls[0]" [alt]="imageLabel ?? 'Unknown image'" class="w-full h-48 object-cover"
+    (error)="onImageLoadError($event)" />
+</div>
+}
 }

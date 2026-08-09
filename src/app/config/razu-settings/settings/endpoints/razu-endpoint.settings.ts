@@ -10,7 +10,8 @@ export const razuEndpointSettings: EndpointSettings = {
       endpointUrls: [
         {
           elastic: 'https://huizenenmenseninwijk.nl/elasticsearch/picoext_nw/_search',
-          sparql: 'https://api.data.razu.nl/datasets/WietseBakker/mehiw/sparql',
+          sparql: 'https://api.data.razu.nl/datasets/WietseBakker/hemiw-test/sparql',
+          // sparql: 'https://api.data.razu.nl/datasets/WietseBakker/mehiw/sparql',
         },
       ],
     },

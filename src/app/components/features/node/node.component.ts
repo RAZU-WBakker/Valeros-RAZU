@@ -112,7 +112,7 @@ export class NodeComponent implements OnInit, OnChanges {
     public labelsCache: LabelsCacheService,
     public nodeSection: NodeSectionService,
     public nodeFile: NodeFileService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     void this.retrieveParents();
@@ -202,7 +202,7 @@ export class NodeComponent implements OnInit, OnChanges {
   }
 
   get sectionNextToTableWidth(): string {
-    if (window.innerWidth < 640) {
+    if (window.innerWidth < 1100) {
       return '100%';
     }
 

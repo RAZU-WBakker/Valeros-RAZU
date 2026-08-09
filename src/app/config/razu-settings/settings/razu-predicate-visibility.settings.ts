@@ -16,7 +16,7 @@ export const razuPredicateVisibilitySettings: PredicateVisibilitySettings = {
       [PredicateVisibility.Show]: [
         {
           predicates: [
-            // 'aggregatieniveau',
+            // 'https://schema.org/startDate',
             // 'archief',
             // 'classificatie',
             // 'archiefvormer',
@@ -50,6 +50,14 @@ export const razuPredicateVisibilitySettings: PredicateVisibilitySettings = {
             'https://identifier.overheid.nl/tooi/def/thes/kern/c_3d782f30',
             'https://identifier.overheid.nl/tooi/def/thes/kern/c_de27ae7a',
             'https://identifier.overheid.nl/tooi/def/thes/kern/c_dfa0ff1f',
+            'https://huizenenmenseninwijk.nl/def/hemiw/mensengeschiedenis',
+            'https://huizenenmenseninwijk.nl/def/hemiw/bouwgeschiedenis',
+            'https://huizenenmenseninwijk.nl/def/hemiw/primaryimage',
+            'https://schema.org/image',
+            'https://schema.org/associatedMedia',
+            'https://data.razu.nl/def/ldto/seo',
+            'https://data.razu.nl/def/ldto/onderdeelVan',
+            'https://data.razu.nl/def/ldto/isRepresentatieVan',
           ],
         },
       ],

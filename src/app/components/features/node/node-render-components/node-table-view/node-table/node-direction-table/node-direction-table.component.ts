@@ -34,7 +34,7 @@ export class NodeDirectionTableComponent {
   constructor(
     public nodes: NodeService,
     private predVisibility: PredicateVisibilityService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initPredData();

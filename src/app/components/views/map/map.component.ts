@@ -4,6 +4,7 @@ import WebMap from '@arcgis/core/WebMap';
 import MapView from '@arcgis/core/views/MapView';
 import esriConfig from '@arcgis/core/config';
 import { defineCustomElements } from '@arcgis/map-components/dist/loader';
+import { defineCustomElements as defineCalciteCustomElements } from '@esri/calcite-components/dist/loader';
 import { HeaderComponent } from '../../ui/header/header.component';
 import { NavButtonsComponent } from "../../ui/nav-buttons/nav-buttons.component";
 
@@ -21,8 +22,9 @@ export class MapComponent implements OnInit, OnDestroy {
     view: MapView | null = null;
 
     ngOnInit(): void {
-        // Define ArcGIS web components
+        // Define ArcGIS web components and Calcite components (used internally by ArcGIS components)
         defineCustomElements(window);
+        defineCalciteCustomElements(window);
         this.initializeMap();
     }
 

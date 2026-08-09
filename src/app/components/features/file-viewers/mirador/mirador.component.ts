@@ -29,7 +29,7 @@ export class MiradorComponent implements OnChanges, OnDestroy, AfterViewInit {
     private miradorService: MiradorService,
     private router: Router,
     private miradorHighlight: MiradorHighlightService,
-  ) {}
+  ) { }
 
   ngAfterViewInit() {
     this.initViewer();
@@ -91,7 +91,7 @@ export class MiradorComponent implements OnChanges, OnDestroy, AfterViewInit {
       this.viewer = await this.miradorService.createViewer({
         id: this.containerId,
         manifestId: manifestUrl,
-        thumbnailNavigation: window.innerWidth >= 640,
+        thumbnailNavigation: window.innerWidth >= 1100,
       });
 
       if (this.viewer) {

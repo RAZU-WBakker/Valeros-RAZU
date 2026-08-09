@@ -49,7 +49,7 @@ export class NodeTableCellComponent implements OnInit {
   constructor(
     public nodes: NodeService,
     public renderComponent: RenderComponentService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initRenderComponents();
